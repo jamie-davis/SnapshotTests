@@ -1,0 +1,23 @@
+Table                                                                                          
+-----                                                                                          
+                                                  Variable                                     
+Difference Id           Variable before           after                                        
+---------- ------------ ------------------------- ------------                                 
+Updated    1            Default variable for Id 1 edited                                       
+                                                                                               
+ReferencingTable                                                                               
+----------------                                                                               
+                                                  Variable     ParentId     ParentId           
+Difference Id           Variable before           after        before       after              
+---------- ------------ ------------------------- ------------ ------------ ------------       
+Updated    1            Default variable for Id 1 edited                                       
+Updated    2                                                   1            3                  
+                                                                                               
+ReferencingTable2                                                                              
+-----------------                                                                              
+                                                  Variable     ParentId     ParentId           
+Difference Id           Variable before           after        before       after              
+---------- ------------ ------------------------- ------------ ------------ ------------       
+Updated    1            Default variable for Id 1 edited                                       
+Updated    2                                                   4            5                  
+                                                                                               

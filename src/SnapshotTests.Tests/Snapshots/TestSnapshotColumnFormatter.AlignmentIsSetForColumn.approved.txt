@@ -1,0 +1,6 @@
+Test                                                                                           
+----                                                                                           
+          Id    ColDouble     ColInt32     ColInt16      ColByte ColString                     
+------------ ------------ ------------ ------------ ------------ ------------                  
+                     1.50            1            1            1 Text                          
+                                                                                               

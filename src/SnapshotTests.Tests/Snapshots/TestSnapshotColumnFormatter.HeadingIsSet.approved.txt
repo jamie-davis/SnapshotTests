@@ -1,0 +1,6 @@
+Here we expect the report column to have the heading "Colname":                                
+                                                                                               
+ColName                                                                                        
+-------                                                                                        
+      T                                                                                        
+                                                                                               

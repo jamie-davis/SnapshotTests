@@ -1,0 +1,9 @@
+Value             Substitute Value                                                             
+----------------- --------------------------                                                   
+1.00              Double-TestCol-1                                                             
+2.00              Double-TestCol-2                                                             
+1                 Int32-TestCol-1                                                              
+2                 Int32-TestCol-2                                                              
+usedefaultforthis TestCol(DEFAULT TRACKER)-1                                                   
+<null>            <null>                                                                       
+                                                                                               

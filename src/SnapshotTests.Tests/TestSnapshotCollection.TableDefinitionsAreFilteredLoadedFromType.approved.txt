@@ -1,0 +1,9 @@
+Tables Defined                                                                                 
+--------------                                                                                 
+                      Primary Compare                                                          
+Table Name            Key     Key                                                              
+--------------------- ------- -------                                                          
+LocalTable            Id                                                                       
+LocalParentTable      Id                                                                       
+LocalReferencingTable Id                                                                       
+                                                                                               

@@ -1,0 +1,10 @@
+                                   Original                               Substituted          
+Name     Original Before           After        Substituted Before        After                
+-------- ------------------------- ------------ ------------------------- ------------         
+Id       1                         1            Id-1                      Id-1                 
+Id       2                         2            Id-2                      Id-2                 
+ParentId 1                         4            Id-1                      Id-3                 
+ParentId 1                         5            Id-1                      Id-4                 
+Variable Default variable for Id 1 edited       Default variable for Id 1 edited               
+Variable Default variable for Id 2 edited       Default variable for Id 2 edited               
+                                                                                               

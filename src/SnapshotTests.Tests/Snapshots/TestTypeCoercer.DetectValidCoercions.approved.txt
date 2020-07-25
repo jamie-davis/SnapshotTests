@@ -1,0 +1,14 @@
+Source         Can Coerce To                                                                   
+-------------- --------------------------------------------------------------------            
+System.SByte   Int16, Int32, Int64, Single, Double, Decimal                                    
+System.Byte    Int16, UInt16, Int32, UInt32, Int64, UInt64, Single, Double, Decimal            
+System.Int16   Int32, Int64, Single, Double, Decimal                                           
+System.UInt16  Int32, UInt32, Int64, UInt64, Single, Double, Decimal                           
+System.Int32   Int64, Single, Double, Decimal                                                  
+System.UInt32  Int64, UInt64, Single, Double, Decimal                                          
+System.Int64   Single, Double, Decimal                                                         
+System.UInt64  Single, Double, Decimal                                                         
+System.Single  Double                                                                          
+System.Double                                                                                  
+System.Decimal                                                                                 
+                                                                                               

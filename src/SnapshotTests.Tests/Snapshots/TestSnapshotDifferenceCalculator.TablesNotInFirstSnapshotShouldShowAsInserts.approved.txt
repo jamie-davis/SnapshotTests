@@ -1,0 +1,8 @@
+CompoundKeyTable                                                                               
+----------------                                                                               
+Difference Id           Name                                                                   
+---------- ------------ ------------                                                           
+Inserted   1            1                                                                      
+Inserted   2            2                                                                      
+Inserted   3            3                                                                      
+                                                                                               

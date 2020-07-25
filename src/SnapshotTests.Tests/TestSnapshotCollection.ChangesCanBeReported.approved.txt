@@ -1,0 +1,13 @@
+Customer                                                                                       
+--------                                                                                       
+Difference Id   Surname FirstName       Age                                                    
+---------- ---- ------- --------------- ---------                                              
+Updated    Id-1 S2      F2 ==> F2Edited 45 ==> 32                                              
+Reference  Id-2 S3                                                                             
+                                                                                               
+Address                                                                                        
+-------                                                                                        
+Difference AddressId   CustomerId    House                                                     
+---------- ----------- ------------- -------------                                             
+Updated    AddressId-1 Id-2 ==> Id-1 8000 ==> 8001                                             
+                                                                                               

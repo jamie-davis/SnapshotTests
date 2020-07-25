@@ -1,0 +1,17 @@
+GuidKeyTable                                                                                   
+------------                                                                                   
+                                                                                                             Variable GuidKeyId   GuidKeyId  
+Difference GuidKeyId                            Variable before                                              after    before      after      
+---------- ------------------------------------ ------------------------------------------------------------ -------- ----------- -----------
+Updated    3e3b99d2-e581-4b00-8fb2-000000000004 Default variable for Id 3e3b99d2-e581-4b00-8fb2-000000000004 edited   GuidKeyId-1 GuidKeyId-1
+Updated    3e3b99d2-e581-4b00-8fb2-000000000005 Default variable for Id 3e3b99d2-e581-4b00-8fb2-000000000005 edited   GuidKeyId-2 GuidKeyId-2
+Reference  3e3b99d2-e581-4b00-8fb2-000000000006                                                                       GuidKeyId-3 GuidKeyId-3
+                                                                                               
+GuidRefTable                                                                                   
+------------                                                                                   
+                                                GuidKeyParentId GuidKeyParentId GuidKeyId   GuidKeyId  
+Difference GuidKeyId                            before          after           before      after      
+---------- ------------------------------------ --------------- --------------- ----------- -----------
+Updated    3e3b99d2-e581-4b00-8fb2-000000000001 GuidKeyId-1     GuidKeyId-2     GuidKeyId-1 GuidKeyId-1
+Updated    3e3b99d2-e581-4b00-8fb2-000000000002 GuidKeyId-2     GuidKeyId-3     GuidKeyId-2 GuidKeyId-2
+                                                                                               

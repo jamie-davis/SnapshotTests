@@ -1,0 +1,8 @@
+CompoundKeyTable                                                                               
+----------------                                                                               
+                   Int32Col     Int32Col                                                       
+Difference Id Name before       after        Id before    Id after    Name before  Name after  
+---------- -- ---- ------------ ------------ ------------ ----------- ------------ ------------
+Updated    1  1    5            6            1            1           Name 1       Name 1      
+Updated    3  3    7            6            3            3           Name 3       Name 3      
+                                                                                               

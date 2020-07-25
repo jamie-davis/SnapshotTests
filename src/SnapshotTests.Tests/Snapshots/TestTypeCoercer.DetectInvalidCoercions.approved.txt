@@ -1,0 +1,16 @@
+Source         Cannot Coerce To                                                                
+-------------- --------------------------------------------------------------------------------
+System.SByte   SByte, Byte, UInt16, UInt32, UInt64                                             
+System.Byte    SByte, Byte                                                                     
+System.Int16   SByte, Byte, Int16, UInt16, UInt32, UInt64                                      
+System.UInt16  SByte, Byte, Int16, UInt16                                                      
+System.Int32   SByte, Byte, Int16, UInt16, Int32, UInt32, UInt64                               
+System.UInt32  SByte, Byte, Int16, UInt16, Int32, UInt32                                       
+System.Int64   SByte, Byte, Int16, UInt16, Int32, UInt32, Int64, UInt64                        
+System.UInt64  SByte, Byte, Int16, UInt16, Int32, UInt32, Int64, UInt64                        
+System.Single  SByte, Byte, Int16, UInt16, Int32, UInt32, Int64, UInt64, Single, Decimal       
+System.Double  SByte, Byte, Int16, UInt16, Int32, UInt32, Int64, UInt64, Single, Double,       
+               Decimal                                                                         
+System.Decimal SByte, Byte, Int16, UInt16, Int32, UInt32, Int64, UInt64, Single, Double,       
+               Decimal                                                                         
+                                                                                               

@@ -1,0 +1,8 @@
+Tables Defined                                                                                 
+--------------                                                                                 
+             Primary Compare                                                                   
+Table Name   Key     Key                                                                       
+------------ ------- -------                                                                   
+ParentTable  Id                                                                                
+RelatedTable Id                                                                                
+                                                                                               

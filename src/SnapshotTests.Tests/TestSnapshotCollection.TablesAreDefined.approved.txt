@@ -1,0 +1,8 @@
+Tables Defined                                                                                 
+--------------                                                                                 
+Table    Primary   Compare                                                                     
+Name     Key       Key                                                                         
+-------- --------- -------                                                                     
+Customer Id        Surname                                                                     
+Address  AddressId                                                                             
+                                                                                               

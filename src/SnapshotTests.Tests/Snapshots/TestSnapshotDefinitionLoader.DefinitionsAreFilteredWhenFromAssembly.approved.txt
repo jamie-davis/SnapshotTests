@@ -1,0 +1,25 @@
+Table Definitions                                                                              
+-----------------                                                                              
+Table Name                                                                                     
+------------                                                                                   
+ParentTable                                                                                    
+                                                                                               
+         Is      Is                                        Referenced                          
+         Primary Compare Is            Is       Referenced Property                            
+    Name Key     Key     Unpredictable Required Table Name Name                                
+    ---- ------- ------- ------------- -------- ---------- ----------                          
+    Id   True    False   True          False                                                   
+                                                                                               
+Table Name                                                                                     
+------------                                                                                   
+RelatedTable                                                                                   
+                                                                                               
+              Is      Is                                         Referenced                    
+              Primary Compare Is            Is       Referenced  Property                      
+    Name      Key     Key     Unpredictable Required Table Name  Name                          
+    --------- ------- ------- ------------- -------- ----------- ----------                    
+    Id        True    False   True          False                                              
+    Required  False   False   False         True                                               
+    ParentId1 False   False   False         False    ParentTable Id                            
+                                                                                               
+                                                                                               

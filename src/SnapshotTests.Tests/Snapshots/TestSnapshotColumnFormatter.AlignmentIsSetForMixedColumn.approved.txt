@@ -1,0 +1,10 @@
+Columns with all numeric data should be right aligned, columns including non-numeric data      
+should be left aligned. Col0 contains a double and an int, Col1 contains an int and a string.  
+                                                                                               
+Test                                                                                           
+----                                                                                           
+          Id         Col0 Col1                                                                 
+------------ ------------ ------------                                                         
+                     1.50 1                                                                    
+                        1 Text                                                                 
+                                                                                               

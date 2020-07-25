@@ -1,0 +1,68 @@
+Table                                                                                          
+-----------------                                                                              
+Table                                                                                          
+                                                                                               
+    Column                                                                                     
+    ------                                                                                     
+    Id                                                                                         
+                                                                                               
+Table                                                                                          
+-----------------                                                                              
+Table2                                                                                         
+                                                                                               
+    Column                                                                                     
+    ------                                                                                     
+    Id                                                                                         
+                                                                                               
+Table                                                                                          
+-----------------                                                                              
+ReferencingTable                                                                               
+                                                                                               
+    Column                                                                                     
+    -------                                                                                    
+    Id                                                                                         
+    OtherId                                                                                    
+                                                                                               
+Table                                                                                          
+-----------------                                                                              
+ReferencingTable2                                                                              
+                                                                                               
+    Column                                                                                     
+    ------                                                                                     
+    Id                                                                                         
+                                                                                               
+Table                                                                                          
+-----------------                                                                              
+GuidKeyTable                                                                                   
+                                                                                               
+    Column                                                                                     
+    ---------                                                                                  
+    GuidKeyId                                                                                  
+                                                                                               
+Table                                                                                          
+-----------------                                                                              
+GuidRefTable                                                                                   
+                                                                                               
+    Column                                                                                     
+    ---------                                                                                  
+    GuidKeyId                                                                                  
+                                                                                               
+Table                                                                                          
+-----------------                                                                              
+Unpredictables                                                                                 
+                                                                                               
+    Column                                                                                     
+    ---------                                                                                  
+    GuidKeyId                                                                                  
+                                                                                               
+Table                                                                                          
+-----------------                                                                              
+LocalTable                                                                                     
+                                                                                               
+    Column                                                                                     
+    -----------                                                                                
+    CompareKey                                                                                 
+    CompareKey2                                                                                
+    Required                                                                                   
+                                                                                               
+                                                                                               

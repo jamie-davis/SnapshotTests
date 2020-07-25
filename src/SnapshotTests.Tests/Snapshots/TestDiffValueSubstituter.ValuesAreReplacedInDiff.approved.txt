@@ -1,0 +1,7 @@
+                                                    Substituted  Substituted                   
+Name        Original Before     Original After      Before       After                         
+----------- ------------------- ------------------- ------------ -------------                 
+Int         100                 101                 Int-1        Int-2                         
+NullableInt                     100                              NullableInt-1                 
+TimeStamp   18/07/2020 08:45:00 18/07/2020 08:46:00 TimeStamp-1  TimeStamp-2                   
+                                                                                               
