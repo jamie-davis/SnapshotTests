@@ -1,0 +1,15 @@
+Address                                                                                        
+-------                                                                                        
+   AddressId   CustomerId        House Street       PostCode                                   
+------------ ------------ ------------ ------------ ------------                               
+         102            1           15 Line 1       code1                                      
+         193            2           99 Line 2       code2                                      
+        6985            3         8000 Line 3       code3                                      
+Customer                                                                                       
+--------                                                                                       
+          Id Surname      FirstName             Age                                            
+------------ ------------ ------------ ------------                                            
+           1 S1           F1                     40                                            
+           2 S2           F2                     45                                            
+           3 S3           F3                     50                                            
+                                                                                               

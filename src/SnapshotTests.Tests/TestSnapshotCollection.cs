@@ -278,5 +278,105 @@ namespace SnapshotTests.Tests
             snapshots.ReportChanges("Before", "After", output);
             output.Report.Verify();
         }
+    
+        [Test]
+        public void SnapshotContentsCanBeReported()
+        {
+            //Arrange
+            var snapshots = new SnapshotCollection();
+            snapshots.DefineTable("Customer")
+                .PrimaryKey("Id")
+                .CompareKey("Surname")
+                .IsUnpredictable("Id");
+            snapshots.DefineTable("Address")
+                    .PrimaryKey("AddressId")
+                    .IsUnpredictable("AddressId")
+                    .IsReference("CustomerId", "Customer", "Id");
+
+            var customers = new[]
+            {
+                new { Id = 1, Surname = "S1", FirstName = "F1", Age = 40 },
+                new { Id = 2, Surname = "S2", FirstName = "F2", Age = 45 },
+                new { Id = 3, Surname = "S3", FirstName = "F3", Age = 50 },
+            };
+
+            var addresses = new[]
+            {
+                new { AddressId = 102, CustomerId = 1, House = 15, Street = "Line 1", PostCode = "code1" },
+                new { AddressId = 193, CustomerId = 2, House = 99, Street = "Line 2", PostCode = "code2" },
+                new { AddressId = 6985, CustomerId = 3, House = 8000, Street = "Line 3", PostCode = "code3" }
+            };
+
+            {
+                var builder = snapshots.NewSnapshot("Before");
+                customers.ToSnapshotTable(builder, "Customer");
+                addresses.ToSnapshotTable(builder, "Address");
+            }
+
+            //Act/Assert
+            var output = new Output();
+            snapshots.GetSnapshotReport("Before", output);
+            output.Report.Verify();
+        }
+    
+        [Test]
+        public void SelectedSnapshotContentsCanBeReported()
+        {
+            //Arrange
+            var snapshots = new SnapshotCollection();
+            snapshots.DefineTable("Customer")
+                .PrimaryKey("Id")
+                .CompareKey("Surname")
+                .IsUnpredictable("Id");
+            snapshots.DefineTable("Address")
+                    .PrimaryKey("AddressId")
+                    .IsUnpredictable("AddressId")
+                    .IsReference("CustomerId", "Customer", "Id");
+
+            var customers = new[]
+            {
+                new { Id = 1, Surname = "S1", FirstName = "F1", Age = 40 },
+                new { Id = 2, Surname = "S2", FirstName = "F2", Age = 45 },
+                new { Id = 3, Surname = "S3", FirstName = "F3", Age = 50 },
+            };
+
+            var addresses = new[]
+            {
+                new { AddressId = 102, CustomerId = 1, House = 15, Street = "Line 1", PostCode = "code1" },
+                new { AddressId = 193, CustomerId = 2, House = 99, Street = "Line 2", PostCode = "code2" },
+                new { AddressId = 6985, CustomerId = 3, House = 8000, Street = "Line 3", PostCode = "code3" }
+            };
+
+            {
+                var builder = snapshots.NewSnapshot("Before");
+                customers.ToSnapshotTable(builder, "Customer");
+                addresses.ToSnapshotTable(builder, "Address");
+            }
+
+            //Act/Assert
+            var output = new Output();
+            snapshots.GetSnapshotReport("Before", output, "Address");
+            output.Report.Verify();
+        }
+    
+        [Test]
+        public void GetSnapshotReportThrowsForMissingSnapshot()
+        {
+            //Arrange
+            var snapshots = new SnapshotCollection();
+            snapshots.DefineTable("Customer")
+                .PrimaryKey("Id")
+                .CompareKey("Surname")
+                .IsUnpredictable("Id");
+            snapshots.DefineTable("Address")
+                    .PrimaryKey("AddressId")
+                    .IsUnpredictable("AddressId")
+                    .IsReference("CustomerId", "Customer", "Id");
+
+            //Act/Assert
+            var output = new Output();
+            Action test = () => snapshots.GetSnapshotReport("Before", output);
+            test.Should().Throw<SnapshotNotFoundException>();
+        }
     }
 }

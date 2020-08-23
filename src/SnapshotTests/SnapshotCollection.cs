@@ -95,6 +95,16 @@ namespace SnapshotTests
             output.FormatTable(report);
         }
 
+        public void GetSnapshotReport(string snapshotName, Output output, params string[] tables)
+        {
+            if (!_snapshots.TryGetValue(snapshotName, out var snapshot))
+            {
+                throw new SnapshotNotFoundException(snapshotName);
+            }
+
+            snapshot.ReportContents(output, tables);
+        }
+
         internal TableDefinition GetTableDefinition(string tableName)
         {
             if (_tableDefinitions.TryGetValue(tableName, out var definition))

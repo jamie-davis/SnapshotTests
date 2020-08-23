@@ -13,7 +13,7 @@ The library relies on TestConsole for formatting and the approval mechanism.</De
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TestConsole" Version="2.3.0" />
+    <PackageReference Include="TestConsole" Version="2.3.2-beta" />
   </ItemGroup>
 
   <ItemGroup>
