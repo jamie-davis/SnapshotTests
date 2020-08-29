@@ -44,14 +44,16 @@ namespace SnapshotTests.Snapshots
         {
             var col = ColumnAdded(fieldName);
             col.IsPrimaryKey = true;
-            _primaryKeys.Add(fieldName);
+            if (!_primaryKeys.Contains(fieldName))
+                _primaryKeys.Add(fieldName);
         }
 
         public void SetCompareKey(string fieldName)
         {
             var col = ColumnAdded(fieldName);
             col.IsCompareKey = true;
-            _compareKeys.Add(fieldName);
+            if (!_compareKeys.Contains(fieldName))
+                _compareKeys.Add(fieldName);
         }
 
         public void SetUnpredictable(string fieldName)

@@ -48,8 +48,38 @@ namespace SnapshotTests.Tests.Snapshots
         }
 
         [Test]
+        public void DuplicatesAreNotCreatedInPrimaryKeys()
+        {
+            //Arrange
+            _definer.PrimaryKey("Key1").PrimaryKey("Key2");
+
+            //Act
+            _definer.PrimaryKey("Key1").PrimaryKey("Key2");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).PrimaryKeys)
+                .Should().Be("Key1, Key2");
+        }
+
+        [Test]
         public void CompareKeyCanBeSet()
         {
+            //Act
+            _definer.CompareKey("Key1");
+
+            //Assert
+            _collection.GetTableDefinition(TestTableName)
+                .CompareKeys
+                .Single()
+                .Should().Be("Key1");
+        }
+
+        [Test]
+        public void DuplicatesAreNotCreatedInCompareKey()
+        {
+            //Arrange
+            _definer.CompareKey("Key1");
+
             //Act
             _definer.CompareKey("Key1");
 
