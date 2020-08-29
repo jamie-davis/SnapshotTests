@@ -83,16 +83,25 @@ namespace SnapshotTests
             return new SnapshotBuilder(snapshot, this);
         }
 
-        public void GetSchemaReport(Output output)
+        public void GetSchemaReport(Output output, bool verbose = false)
         {
-            var report = _tableDefinitions.Values.AsReport(rep => rep
-                .AddColumn(t => t.TableName)
-                .AddColumn(t => string.Join((string) " + ", (IEnumerable<string>) t.PrimaryKeys), cc => cc.Heading("Primary Key"))
-                .AddColumn(t => string.Join((string) " + ", (IEnumerable<string>) t.CompareKeys), cc => cc.Heading("Compare Key"))
-                .Title("Tables Defined")
-            );
+            if (verbose)
+            {
+                TableDefinitionReporter.Report(TablesInDefinitionOrder, output);
+            }
+            else
+            {
+                var report = _tableDefinitions.Values.AsReport(rep => rep
+                    .AddColumn(t => t.TableName)
+                    .AddColumn(t => string.Join((string) " + ", (IEnumerable<string>) t.PrimaryKeys),
+                        cc => cc.Heading("Primary Key"))
+                    .AddColumn(t => string.Join((string) " + ", (IEnumerable<string>) t.CompareKeys),
+                        cc => cc.Heading("Compare Key"))
+                    .Title("Tables Defined")
+                );
 
-            output.FormatTable(report);
+                output.FormatTable(report);
+            }
         }
 
         public void GetSnapshotReport(string snapshotName, Output output, params string[] tables)

@@ -1,7 +1,16 @@
-Tables Defined                                                                                 
---------------                                                                                 
-Table Primary Compare                                                                          
-Name  Key     Key                                                                              
------ ------- -------                                                                          
-Data          A + B                                                                            
+Table Definitions                                                                              
+-----------------                                                                              
+Table                                                                                          
+Name                                                                                           
+-----                                                                                          
+Data                                                                                           
+                                                                                               
+         Is      Is                                        Referenced                          
+         Primary Compare Is            Is       Referenced Property                            
+    Name Key     Key     Unpredictable Required Table Name Name                                
+    ---- ------- ------- ------------- -------- ---------- ----------                          
+    A    False   True    False         False                                                   
+    B    False   True    False         False                                                   
+    C    False   False   False         False                                                   
+                                                                                               
                                                                                                

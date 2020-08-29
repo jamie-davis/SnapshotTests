@@ -61,7 +61,7 @@ namespace SnapshotTests.Tests.Snapshots
             //Assert
             var output = new Output();
             var table = _collection.GetTableDefinition("Data");
-            _collection.GetSchemaReport(output);
+            _collection.GetSchemaReport(output, true);
             output.Report.Verify();
         }
     }

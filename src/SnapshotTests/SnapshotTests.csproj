@@ -9,7 +9,7 @@ The library relies on TestConsole for formatting and the approval mechanism.</De
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
-    <Version>0.2.0-beta</Version>
+    <Version>0.4.0-beta</Version>
   </PropertyGroup>
 
   <ItemGroup>
