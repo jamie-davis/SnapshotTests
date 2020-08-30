@@ -3,7 +3,7 @@ using SnapshotTests.Snapshots;
 using TestConsoleLib;
 using TestConsoleLib.Testing;
 
-namespace SnapshotTests.Tests.Snapshots
+namespace SnapshotTests.Tests
 {
     [TestFixture]
     public class TestSnapshotDefinitionLoader
@@ -76,7 +76,7 @@ namespace SnapshotTests.Tests.Snapshots
             var assembly = GetType().Assembly;
 
             //Act
-            var definition = SnapshotDefinitionLoader.Load(assembly, t => t != typeof(TestDefinitions.TableDef));
+            var definition = SnapshotDefinitionLoader.Load(assembly, t => t != typeof(Snapshots.TestDefinitions.TableDef));
 
             //Assert
             var output = new Output();
