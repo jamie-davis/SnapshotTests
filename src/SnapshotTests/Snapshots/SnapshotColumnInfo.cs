@@ -6,7 +6,7 @@ using TestConsoleLib.Exceptions;
 
 namespace SnapshotTests.Snapshots
 {
-    internal class SnapshotColumnInfo
+    public class SnapshotColumnInfo
     {
         private readonly object _lock = new object();
 

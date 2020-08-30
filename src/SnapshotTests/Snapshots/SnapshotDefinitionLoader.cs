@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SnapshotTests.Snapshots;
 
-namespace SnapshotTests.Snapshots
+namespace SnapshotTests
 {
-    internal static class SnapshotDefinitionLoader
+    public static class SnapshotDefinitionLoader
     {
-        internal static DefinitionSet Load(Assembly assembly, Func<Type, bool> typeFilter = null)
+        public static DefinitionSet Load(Assembly assembly, Func<Type, bool> typeFilter = null)
         {
             var types = assembly.GetTypes()
                 .Where(t => !t.IsNested && CustomAttributeExtensions.GetCustomAttribute<SnapshotDefinitionAttribute>((MemberInfo) t) != null)

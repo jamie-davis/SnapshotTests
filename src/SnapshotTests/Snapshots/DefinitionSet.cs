@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SnapshotTests.Snapshots
 {
-    internal class DefinitionSet
+    public class DefinitionSet
     {
         public DefinitionSet(IEnumerable<TableDefinition> tables)
         {

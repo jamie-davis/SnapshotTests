@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace SnapshotTests.Snapshots
 {
-    internal class TableDefinition
+    public class TableDefinition
     {
-        internal class Reference
+        public class Reference
         {
             internal Reference(string ourField, string targetTable, string targetField)
             {
@@ -31,7 +31,7 @@ namespace SnapshotTests.Snapshots
         public string TableName { get; }
         public IEnumerable<string> PrimaryKeys => _primaryKeys;
         public IEnumerable<string> CompareKeys => _compareKeys;
-        internal IEnumerable<SnapshotColumnInfo> Columns => _columns;
+        public IEnumerable<SnapshotColumnInfo> Columns => _columns;
         public IEnumerable<string> Unpredictable => _unpredictableFields;
         public IEnumerable<Reference> References => _references;
         public IEnumerable<string> RequiredColumns => _requiredColumns;
