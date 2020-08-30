@@ -35,6 +35,12 @@ namespace SnapshotTests.Snapshots
         public bool IsUnpredictable { get; set; }
 
         /// <summary>
+        /// The field has a value that can be predicted for the purposes of unit testing, even if it is of a type that is normally unpredictable.
+        /// <remarks>This is useful to override an automated or default setting when needed.</remarks>
+        /// </summary>
+        public bool IsPredictable { get; set; }
+
+        /// <summary>
         /// The name of the table containing a field referenced by this column. If this is set, <see cref="ReferencedPropertyName"/> must also be set.
         /// </summary>
         public string ReferencedTableName { get; private set; }

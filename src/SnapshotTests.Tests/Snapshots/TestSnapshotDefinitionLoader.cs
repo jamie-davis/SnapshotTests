@@ -33,6 +33,13 @@ namespace SnapshotTests.Tests.Snapshots
             public static int ParentId1 { get; set; }
         }
 
+        [SnapshotDefinition("PredictableTable")]
+        public static class PredictableTable
+        {
+            [Predictable] 
+            public static int Id { get; set; }
+        }
+
         #endregion
 
         [Test]
@@ -53,9 +60,6 @@ namespace SnapshotTests.Tests.Snapshots
         [Test]
         public void DefinitionsAreLoadedFromEnclosingType()
         {
-            //Arrange
-            var assembly = GetType().Assembly;
-
             //Act
             var definition = SnapshotDefinitionLoader.Load(GetType());
 

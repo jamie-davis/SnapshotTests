@@ -5,12 +5,12 @@ Name
 -----                                                                                          
 Data                                                                                           
                                                                                                
-         Is      Is                                        Referenced                          
-         Primary Compare Is            Is       Referenced Property                            
-    Name Key     Key     Unpredictable Required Table Name Name                                
-    ---- ------- ------- ------------- -------- ---------- ----------                          
-    A    False   True    False         False                                                   
-    B    False   True    False         False                                                   
-    C    False   False   False         False                                                   
+         Is      Is                                                    Referenced              
+         Primary Compare Is            Is          Is       Referenced Property                
+    Name Key     Key     Unpredictable Predictable Required Table Name Name                    
+    ---- ------- ------- ------------- ----------- -------- ---------- ----------              
+    A    False   True    False         False       False                                       
+    B    False   True    False         False       False                                       
+    C    False   False   False         False       False                                       
                                                                                                
                                                                                                

@@ -23,6 +23,7 @@ namespace SnapshotTests.Snapshots
         private readonly List<string> _primaryKeys = new List<string>();
         private readonly List<string> _compareKeys = new List<string>();
         private readonly List<string> _unpredictableFields = new List<string>();
+        private readonly List<string> _predictableFields = new List<string>();
         private readonly List<Reference> _references = new List<Reference>();
         private readonly List<string> _requiredColumns = new List<string>();
         private List<SnapshotColumnInfo> _columns = new List<SnapshotColumnInfo>();
@@ -61,6 +62,13 @@ namespace SnapshotTests.Snapshots
             var col = ColumnAdded(fieldName);
             col.IsUnpredictable = true;
             _unpredictableFields.Add(fieldName);
+        }
+
+        public void SetPredictable(string fieldName)
+        {
+            var col = ColumnAdded(fieldName);
+            col.IsPredictable = true;
+            _predictableFields.Add(fieldName);
         }
 
         public void SetReference(string columnName, string referencedTableName, string referencedPropertyName)

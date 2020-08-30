@@ -23,6 +23,7 @@ namespace SnapshotTests.Snapshots
                         .AddColumn(c => c.IsPrimaryKey)
                         .AddColumn(c => c.IsCompareKey)
                         .AddColumn(c => c.IsUnpredictable)
+                        .AddColumn(c => c.IsPredictable)
                         .AddColumn(c => c.IsRequired)
                         .AddColumn(c => c.ReferencedTableName)
                         .AddColumn(c => c.ReferencedPropertyName));

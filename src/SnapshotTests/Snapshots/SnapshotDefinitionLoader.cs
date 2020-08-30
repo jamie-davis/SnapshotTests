@@ -46,7 +46,8 @@ namespace SnapshotTests.Snapshots
                 .Select(p => new
                 {
                     Prop = p,
-                    Unpredictable = p.GetCustomAttribute<UnpredictableAttribute>(),
+                    Unpredictable = p.GetCustomAttribute<UnpredictableAttribute>(), 
+                    Predictable = p.GetCustomAttribute<PredictableAttribute>(),
                     Required = p.GetCustomAttribute<RequiredAttribute>(),
                     Key = p.GetCustomAttribute<KeyAttribute>(),
                     References = p.GetCustomAttribute<ReferencesAttribute>(),
@@ -66,6 +67,9 @@ namespace SnapshotTests.Snapshots
 
                 if (attributes.Required != null)
                     definition.SetRequired(attributes.Prop.Name);
+
+                if (attributes.Predictable != null)
+                    definition.SetPredictable(attributes.Prop.Name);
             }
 
             return definition;
