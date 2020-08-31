@@ -62,6 +62,7 @@ namespace SnapshotTests.Snapshots
         {
             var col = ColumnAdded(fieldName);
             col.IsUnpredictable = true;
+            col.IsPredictable = false;
             _unpredictableFields.Add(fieldName);
         }
 
@@ -69,6 +70,7 @@ namespace SnapshotTests.Snapshots
         {
             var col = ColumnAdded(fieldName);
             col.IsPredictable = true;
+            col.IsUnpredictable = false;
             _predictableFields.Add(fieldName);
         }
 
