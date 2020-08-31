@@ -1,0 +1,33 @@
+Table Definitions                                                                              
+-----------------                                                                              
+Table Name                                                                                     
+----------------                                                                               
+LocalTable                                                                                     
+                                                                                               
+         Is      Is                                                    Referenced              
+         Primary Compare Is            Is          Is       Referenced Property                
+    Name Key     Key     Unpredictable Predictable Required Table Name Name                    
+    ---- ------- ------- ------------- ----------- -------- ---------- ----------              
+    Id   False   False   True          False       False                                       
+                                                                                               
+Table Name                                                                                     
+----------------                                                                               
+PredictableTable                                                                               
+                                                                                               
+         Is      Is                                                    Referenced              
+         Primary Compare Is            Is          Is       Referenced Property                
+    Name Key     Key     Unpredictable Predictable Required Table Name Name                    
+    ---- ------- ------- ------------- ----------- -------- ---------- ----------              
+    Ref  False   False   False         False       False    LocalTable Id                      
+                                                                                               
+Table Name                                                                                     
+----------------                                                                               
+AddedTable                                                                                     
+                                                                                               
+         Is      Is                                                    Referenced              
+         Primary Compare Is            Is          Is       Referenced Property                
+    Name Key     Key     Unpredictable Predictable Required Table Name Name                    
+    ---- ------- ------- ------------- ----------- -------- ---------- ----------              
+    Id   False   False   False         True        False                                       
+                                                                                               
+                                                                                               

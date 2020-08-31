@@ -27,6 +27,12 @@
             return this;
         }
 
+        public TableDefiner IsPredictable(string fieldName)
+        {
+            _tableDefinition.SetPredictable(fieldName);
+            return this;
+        }
+
         /// <summary>
         /// Indicate that a field is mandatory in difference reports when a row from the table is present, even if it is not a difference. This can be
         /// a useful way to enhance readability in difference output.

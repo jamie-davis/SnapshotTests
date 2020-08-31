@@ -51,7 +51,7 @@ namespace SnapshotTests
 
         private void LoadTableDefinitionSet(DefinitionSet loaded)
         {
-            _tablesInDefinitionOrder = loaded.Tables.ToList();
+            _tablesInDefinitionOrder = DefinitionSetMerger.Merge(loaded, _tablesInDefinitionOrder).ToList();
             _tableDefinitions = _tablesInDefinitionOrder.ToDictionary(t => t.TableName, t => t);
         }
 
@@ -145,5 +145,14 @@ namespace SnapshotTests
             SnapshotComparer.ReportDifferences(this, before, after, output);
         }
 
+        /// <summary>
+        /// Apply a set of table definitions. These may have been constructed automatically or loaded by the <see cref="SnapshotDefinitionLoader"/>.
+        /// Note that settings from the new definitions will override settings already present on the collection. The order sets are applied matters.
+        /// </summary>
+        /// <param name="definitionSet">The definition set to apply</param>
+        public void ApplyDefinitions(DefinitionSet definitionSet)
+        {
+            LoadTableDefinitionSet(definitionSet);
+        }
     }
 }

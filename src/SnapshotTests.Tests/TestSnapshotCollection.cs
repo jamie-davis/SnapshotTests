@@ -109,6 +109,39 @@ namespace SnapshotTests.Tests
         }
 
         [Test]
+        public void TableDefinitionsCanBeApplied()
+        {
+            //Arrange
+            var definitionSet = SnapshotDefinitionLoader.Load(GetType());
+            var snapshots = new SnapshotCollection();
+            
+            //Act
+            snapshots.ApplyDefinitions(definitionSet);
+
+            //Assert
+            var output = new Output();
+            snapshots.GetSchemaReport(output, true);
+            output.Report.Verify();
+        }
+
+        [Test]
+        public void AppliedDefinitionsAreMerged()
+        {
+            //Arrange
+            var definitionSet = SnapshotDefinitionLoader.Load(GetType());
+            var snapshots = new SnapshotCollection();
+            snapshots.DefineTable("LocalTable").CompareKey("Name");
+
+            //Act
+            snapshots.ApplyDefinitions(definitionSet);
+
+            //Assert
+            var output = new Output();
+            snapshots.GetSchemaReport(output, true);
+            output.Report.Verify();
+        }
+
+        [Test]
         public void ReportChangesThrowsWhenBeforeSnapshotNotPresent()
         {
             //Arrange/Act

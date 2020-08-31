@@ -1,0 +1,16 @@
+Table Definitions                                                                              
+-----------------                                                                              
+Table                                                                                          
+Name                                                                                           
+---------                                                                                      
+TestTable                                                                                      
+                                                                                               
+         Is      Is                                                    Referenced              
+         Primary Compare Is            Is          Is       Referenced Property                
+    Name Key     Key     Unpredictable Predictable Required Table Name Name                    
+    ---- ------- ------- ------------- ----------- -------- ---------- ----------              
+    RefB False   False   False         False       False    B          BKey                    
+    RefD False   False   False         False       False    D          DKey                    
+    RefC False   False   False         False       False    C          CKey                    
+                                                                                               
+                                                                                               

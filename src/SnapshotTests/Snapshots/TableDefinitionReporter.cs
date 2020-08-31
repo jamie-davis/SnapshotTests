@@ -6,6 +6,11 @@ namespace SnapshotTests.Snapshots
 {
     internal static class TableDefinitionReporter
     {
+        internal static void Report(TableDefinition tableDefinition, Output output)
+        {
+            Report(new []{ tableDefinition }, output);
+        }
+
         internal static void Report(IEnumerable<TableDefinition> tableDefinitions, Output output)
         {
             var report = MakeReport(tableDefinitions, true);

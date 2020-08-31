@@ -113,6 +113,17 @@ namespace SnapshotTests.Tests.Snapshots
         }
 
         [Test]
+        public void FieldCanBeFlaggedAsPredictable()
+        {
+            //Act
+            _definer.IsPredictable("Key1").IsPredictable("Key2");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).Predictable)
+                .Should().Be("Key1, Key2");
+        }
+
+        [Test]
         public void FieldCanBeFlaggedAsRequired()
         {
             //Act

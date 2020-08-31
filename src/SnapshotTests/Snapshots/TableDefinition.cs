@@ -33,6 +33,7 @@ namespace SnapshotTests.Snapshots
         public IEnumerable<string> CompareKeys => _compareKeys;
         public IEnumerable<SnapshotColumnInfo> Columns => _columns;
         public IEnumerable<string> Unpredictable => _unpredictableFields;
+        public IEnumerable<string> Predictable => _predictableFields;
         public IEnumerable<Reference> References => _references;
         public IEnumerable<string> RequiredColumns => _requiredColumns;
 
