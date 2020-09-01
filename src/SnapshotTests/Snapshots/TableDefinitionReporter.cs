@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TestConsole.OutputFormatting;
 using TestConsoleLib;
 
@@ -23,6 +24,9 @@ namespace SnapshotTests.Snapshots
             {
                 rep.RemoveBufferLimit()
                     .AddColumn(d => d.TableName)
+                    .AddColumn(d => d.ExcludeFromComparison)
+                    .AddColumn(d => d.IncludeInComparison)
+                    .AddColumn(d => string.Join(", ", d.DefiningTypes.Select(t => t.Name)), cc => cc.Heading("Defined By Types"))
                     .AddChild(d => d.Columns, colRep => colRep.RemoveBufferLimit()
                         .AddColumn(c => c.Name)
                         .AddColumn(c => c.IsPrimaryKey)

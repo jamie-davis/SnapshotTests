@@ -41,7 +41,7 @@ namespace SnapshotTests
             if (snapshotTableName == null)
                 return null;
 
-            var definition = new TableDefinition(snapshotTableName);
+            var definition = new TableDefinition(snapshotTableName, new Type[] {type});
 
             var propertyAttributes = type.GetProperties()
                 .Select(p => new
@@ -72,6 +72,9 @@ namespace SnapshotTests
                 if (attributes.Predictable != null)
                     definition.SetPredictable(attributes.Prop.Name);
             }
+
+            if (type.GetCustomAttribute<ExcludeFromComparisonAttribute>() != null)
+                definition.ExcludeFromComparison = true;
 
             return definition;
         }

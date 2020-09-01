@@ -172,5 +172,51 @@ namespace SnapshotTests.Tests.Snapshots
             output.FormatTable(_collection.GetTableDefinition(TestTableName).References);
             output.Report.Verify();
         }
+
+        [Test]
+        public void IncludeInComparisonCanBeSet()
+        {
+            //Act
+            _definer.IncludeInComparison();
+
+            //Assert
+            _collection.GetTableDefinition(TestTableName).IncludeInComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void ExcludeFromComparisonCanBeSet()
+        {
+            //Act
+            _definer.ExcludeFromComparison();
+
+            //Assert
+            _collection.GetTableDefinition(TestTableName).ExcludeFromComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void IncludeInComparisonResetsExcludeFromComparison()
+        {
+            //Arrange
+            _definer.ExcludeFromComparison();
+            
+            //Act
+            _definer.IncludeInComparison();
+
+            //Assert
+            _collection.GetTableDefinition(TestTableName).ExcludeFromComparison.Should().BeFalse();
+        }
+
+        [Test]
+        public void ExcludeFromComparisonResetsIncludeInComparison()
+        {
+            //Arrange
+            _definer.IncludeInComparison();
+            
+            //Act
+            _definer.ExcludeFromComparison();
+
+            //Assert
+            _collection.GetTableDefinition(TestTableName).IncludeInComparison.Should().BeFalse();
+        }
     }
 }

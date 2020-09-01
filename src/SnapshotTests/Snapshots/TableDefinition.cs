@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace SnapshotTests.Snapshots
@@ -28,6 +29,12 @@ namespace SnapshotTests.Snapshots
         private readonly List<string> _requiredColumns = new List<string>();
         private List<SnapshotColumnInfo> _columns = new List<SnapshotColumnInfo>();
 
+        /// <summary>
+        /// Note, this can be null if the table was not defined using a type
+        /// </summary>
+        public ReadOnlyCollection<Type> DefiningTypes { get; }
+        public bool ExcludeFromComparison { get; internal set; }
+        public bool IncludeInComparison { get; internal set; }
         public string TableName { get; }
         public IEnumerable<string> PrimaryKeys => _primaryKeys;
         public IEnumerable<string> CompareKeys => _compareKeys;
@@ -37,9 +44,10 @@ namespace SnapshotTests.Snapshots
         public IEnumerable<Reference> References => _references;
         public IEnumerable<string> RequiredColumns => _requiredColumns;
 
-        public TableDefinition(string tableName)
+        public TableDefinition(string tableName, IEnumerable<Type> definingTypes = null)
         {
             TableName = tableName;
+            DefiningTypes = new ReadOnlyCollection<Type>(definingTypes?.ToList() ?? new List<Type>());
         }
 
         public void SetPrimaryKey(string fieldName)

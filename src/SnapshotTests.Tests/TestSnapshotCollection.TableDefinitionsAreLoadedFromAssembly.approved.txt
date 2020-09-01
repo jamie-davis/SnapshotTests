@@ -3,6 +3,7 @@ Tables Defined
              Primary Compare                                                                   
 Table Name   Key     Key                                                                       
 ------------ ------- -------                                                                   
+DoNotCompare Id                                                                                
 ParentTable  Id                                                                                
 RelatedTable Id                                                                                
 Table        Id                                                                                

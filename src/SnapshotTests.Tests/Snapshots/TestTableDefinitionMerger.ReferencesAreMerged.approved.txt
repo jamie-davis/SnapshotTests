@@ -1,9 +1,10 @@
 Table Definitions                                                                              
 -----------------                                                                              
-Table                                                                                          
-Name                                                                                           
----------                                                                                      
-TestTable                                                                                      
+          Exclude               Defined                                                        
+Table     From       Include In By                                                             
+Name      Comparison Comparison Types                                                          
+--------- ---------- ---------- -------                                                        
+TestTable False      False                                                                     
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                

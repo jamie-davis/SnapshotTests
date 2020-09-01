@@ -1,8 +1,10 @@
 Table Definitions                                                                              
 -----------------                                                                              
-Table Name                                                                                     
-----------------                                                                               
-LocalTable                                                                                     
+                 Exclude                                                                       
+                 From       Include In                                                         
+Table Name       Comparison Comparison Defined By Types                                        
+---------------- ---------- ---------- --------------------------------------                  
+LocalTable       False      False      A_TableDef, B_TableDef                                  
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                
@@ -10,9 +12,11 @@ LocalTable
     ---- ------- ------- ------------- ----------- -------- ---------- ----------              
     Id   False   False   True          False       False                                       
                                                                                                
-Table Name                                                                                     
-----------------                                                                               
-PredictableTable                                                                               
+                 Exclude                                                                       
+                 From       Include In                                                         
+Table Name       Comparison Comparison Defined By Types                                        
+---------------- ---------- ---------- --------------------------------------                  
+PredictableTable False      False      A_PredictableTable, B_PredictableTable                  
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                
@@ -20,9 +24,11 @@ PredictableTable
     ---- ------- ------- ------------- ----------- -------- ---------- ----------              
     Ref  False   False   False         False       False    LocalTable Id                      
                                                                                                
-Table Name                                                                                     
-----------------                                                                               
-AddedTable                                                                                     
+                 Exclude                                                                       
+                 From       Include In                                                         
+Table Name       Comparison Comparison Defined By Types                                        
+---------------- ---------- ---------- --------------------------------------                  
+AddedTable       False      False      B_AddedTable                                            
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                

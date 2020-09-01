@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using SnapshotTests.Snapshots;
+using SnapshotTests.Tests.Snapshots.TestSupportUtils;
 using TestConsole.OutputFormatting;
 using TestConsole.OutputFormatting.ReportDefinitions;
 using TestConsoleLib;
@@ -118,6 +119,21 @@ namespace SnapshotTests.Tests.Snapshots
 
             //Assert
             result.Should().BeFalse();
+        }
+
+        [Test]
+        public void SnapshotShouldNotConsiderExcludedTables()
+        {
+            //Arrange
+            var before = MakeSnapshot("Test", 1, 1, MakeValueSet(5));
+            var after = MakeSnapshot("Test2", 1, 1, MakeValueSet(6));
+            _collection.DefineTable(TableName).ExcludeFromComparison();
+
+            //Act
+            var result = SnapshotDifferenceAnalyser.Match(_collection, before, after);
+
+            //Assert
+            result.Should().BeTrue(); //it can only be a match if the table is ignored
         }
 
         [Test]

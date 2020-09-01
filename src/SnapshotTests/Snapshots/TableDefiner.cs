@@ -33,6 +33,20 @@
             return this;
         }
 
+        public TableDefiner IncludeInComparison()
+        {
+            _tableDefinition.IncludeInComparison = true;
+            _tableDefinition.ExcludeFromComparison = false;
+            return this;
+        }
+
+        public TableDefiner ExcludeFromComparison()
+        {
+            _tableDefinition.ExcludeFromComparison = true;
+            _tableDefinition.IncludeInComparison = false;
+            return this;
+        }
+
         /// <summary>
         /// Indicate that a field is mandatory in difference reports when a row from the table is present, even if it is not a difference. This can be
         /// a useful way to enhance readability in difference output.

@@ -1,8 +1,10 @@
 Table Definitions                                                                              
 -----------------                                                                              
-Table Name                                                                                     
----------------------                                                                          
-LocalTable                                                                                     
+                      Exclude                                                                  
+                      From       Include In Defined By                                         
+Table Name            Comparison Comparison Types                                              
+--------------------- ---------- ---------- ---------------                                    
+LocalTable            False      False      TableDef                                           
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                
@@ -10,9 +12,11 @@ LocalTable
     ---- ------- ------- ------------- ----------- -------- ---------- ----------              
     Id   True    False   True          False       False                                       
                                                                                                
-Table Name                                                                                     
----------------------                                                                          
-LocalParentTable                                                                               
+                      Exclude                                                                  
+                      From       Include In Defined By                                         
+Table Name            Comparison Comparison Types                                              
+--------------------- ---------- ---------- ---------------                                    
+LocalParentTable      False      False      ParentTableDef                                     
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                
@@ -20,9 +24,11 @@ LocalParentTable
     ---- ------- ------- ------------- ----------- -------- ---------- ----------              
     Id   True    False   True          False       False                                       
                                                                                                
-Table Name                                                                                     
----------------------                                                                          
-LocalReferencingTable                                                                          
+                      Exclude                                                                  
+                      From       Include In Defined By                                         
+Table Name            Comparison Comparison Types                                              
+--------------------- ---------- ---------- ---------------                                    
+LocalReferencingTable False      False      RelatedTableDef                                    
                                                                                                
               Is      Is                                                     Referenced        
               Primary Compare Is            Is          Is       Referenced  Property          

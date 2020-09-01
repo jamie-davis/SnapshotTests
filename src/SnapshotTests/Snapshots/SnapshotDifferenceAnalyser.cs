@@ -17,7 +17,7 @@ namespace SnapshotTests.Snapshots
 
         public static bool Match(SnapshotCollection collection, Snapshot before, Snapshot after)
         {
-            foreach (var tableDefinition in collection.TablesInDefinitionOrder)
+            foreach (var tableDefinition in collection.TablesInDefinitionOrder.Where(t => !t.ExcludeFromComparison))
             {
                 //find all keys
                 var beforeRows = SnapshotKeyExtractor.GetKeys(before, tableDefinition) ?? new Dictionary<SnapshotRowKey, SnapshotRow>();

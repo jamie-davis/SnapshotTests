@@ -24,7 +24,8 @@ namespace SnapshotTests.Snapshots
             if (main.TableName != changes.TableName)
                 throw new MergeDefinitionsTargetDifferentTables(main.TableName, changes.TableName);
 
-            var tableDefinition = new TableDefinition(main.TableName);
+            var tableDefinition = new TableDefinition(main.TableName, main.DefiningTypes.Concat(changes.DefiningTypes));
+            GetExclusion(main, changes, tableDefinition);
 
             GetPrimaryKey(main, changes, tableDefinition);
             GetCompareKey(main, changes, tableDefinition);
@@ -32,6 +33,19 @@ namespace SnapshotTests.Snapshots
             GetRequiredFields(main, changes, tableDefinition);
             GetUnpredictableFields(main, changes, tableDefinition);
             return tableDefinition;
+        }
+
+        private static void GetExclusion(TableDefinition main, TableDefinition changes, TableDefinition tableDefinition)
+        {
+            if (changes.IncludeInComparison)
+                tableDefinition.IncludeInComparison = true;
+            else if (changes.ExcludeFromComparison)
+                tableDefinition.ExcludeFromComparison = true;
+            else
+            {
+                tableDefinition.IncludeInComparison = main.IncludeInComparison;
+                tableDefinition.ExcludeFromComparison = main.ExcludeFromComparison;
+            }
         }
 
         private static void GetUnpredictableFields(TableDefinition main, TableDefinition changes, TableDefinition tableDefinition)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
@@ -14,6 +15,14 @@ namespace SnapshotTests.Tests.Snapshots
     public class TestTableDefinitionMerger
     {
         private const string Table = "TestTable";
+
+        #region Fake Defining types
+
+        class FakeDefiningType1{}
+        class FakeDefiningType2{}
+        class FakeDefiningType3{}
+
+        #endregion
 
         [Test]
         public void DifferentTableNamesShouldThrow()
@@ -199,6 +208,184 @@ namespace SnapshotTests.Tests.Snapshots
 
             //Assert
             string.Join(", ", result.Unpredictable).Should().Be("A, C");
+        }
+
+        [Test]
+        public void ExclusionIsPreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.ExcludeFromComparison = true;
+            left.SetUnpredictable("B");
+
+            right.SetPredictable("B");
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            result.ExcludeFromComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void ExclusionIsMerged()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetUnpredictable("B");
+
+            right.SetPredictable("B");
+            right.ExcludeFromComparison = true;
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            result.ExcludeFromComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void InclusionIsPreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.IncludeInComparison = true;
+            left.SetUnpredictable("B");
+
+            right.SetPredictable("B");
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            result.IncludeInComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void InclusionIsMerged()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetUnpredictable("B");
+
+            right.SetPredictable("B");
+            right.IncludeInComparison = true;
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            result.IncludeInComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void InclusionOverridesExclusion()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.ExcludeFromComparison = true;
+            left.SetUnpredictable("B");
+
+            right.SetPredictable("B");
+            right.IncludeInComparison = true;
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            result.IncludeInComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void InclusionRemovesExclusion()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.ExcludeFromComparison = true;
+            left.SetUnpredictable("B");
+
+            right.SetPredictable("B");
+            right.IncludeInComparison = true;
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            result.ExcludeFromComparison.Should().BeFalse();
+        }
+
+        [Test]
+        public void ExclusionRemovesInclusion()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.IncludeInComparison = true;
+            left.SetUnpredictable("B");
+
+            right.SetPredictable("B");
+            right.ExcludeFromComparison = true;
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            result.ExcludeFromComparison.Should().BeTrue();
+        }
+
+        [Test]
+        public void DefiningTypesArePreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table, new [] { typeof(FakeDefiningType1) });
+            var right = new TableDefinition(Table);
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.DefiningTypes.Select(t => t.Name)).Should().Be(nameof(FakeDefiningType1));
+        }
+
+        [Test]
+        public void DefiningTypesFromChangesAreAppended()
+        {
+            //Arrange
+            var left = new TableDefinition(Table, new [] { typeof(FakeDefiningType1) });
+            var right = new TableDefinition(Table, new [] { typeof(FakeDefiningType2) });
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.DefiningTypes.Select(t => t.Name)).Should().Be($"{nameof(FakeDefiningType1)}, {nameof(FakeDefiningType2)}");
+        }
+
+        [Test]
+        public void DuplicateDefiningTypesArePreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table, new [] { typeof(FakeDefiningType1), typeof(FakeDefiningType3) });
+            var right = new TableDefinition(Table, new [] { typeof(FakeDefiningType2), typeof(FakeDefiningType3) });
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.DefiningTypes.Select(t => t.Name)).Should().Be($"{nameof(FakeDefiningType1)}, {nameof(FakeDefiningType3)}, {nameof(FakeDefiningType2)}, {nameof(FakeDefiningType3)}");
         }
     }
 }

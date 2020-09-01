@@ -1,8 +1,10 @@
 Table Definitions                                                                              
 -----------------                                                                              
-Table Name                                                                                     
-------------                                                                                   
-ParentTable                                                                                    
+             Exclude                                                                           
+             From       Include In                                                             
+Table Name   Comparison Comparison Defined By Types                                            
+------------ ---------- ---------- ----------------                                            
+DoNotCompare True       False      NotComparedTable                                            
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                
@@ -10,9 +12,23 @@ ParentTable
     ---- ------- ------- ------------- ----------- -------- ---------- ----------              
     Id   True    False   True          False       False                                       
                                                                                                
-Table Name                                                                                     
-------------                                                                                   
-RelatedTable                                                                                   
+             Exclude                                                                           
+             From       Include In                                                             
+Table Name   Comparison Comparison Defined By Types                                            
+------------ ---------- ---------- ----------------                                            
+ParentTable  False      False      ParentTableDef                                              
+                                                                                               
+         Is      Is                                                    Referenced              
+         Primary Compare Is            Is          Is       Referenced Property                
+    Name Key     Key     Unpredictable Predictable Required Table Name Name                    
+    ---- ------- ------- ------------- ----------- -------- ---------- ----------              
+    Id   True    False   True          False       False                                       
+                                                                                               
+             Exclude                                                                           
+             From       Include In                                                             
+Table Name   Comparison Comparison Defined By Types                                            
+------------ ---------- ---------- ----------------                                            
+RelatedTable False      False      RelatedTableDef                                             
                                                                                                
               Is      Is                                                     Referenced        
               Primary Compare Is            Is          Is       Referenced  Property          
@@ -22,9 +38,11 @@ RelatedTable
     Required  False   False   False         False       True                                   
     ParentId1 False   False   False         False       False    ParentTable Id                
                                                                                                
-Table Name                                                                                     
-------------                                                                                   
-Table                                                                                          
+             Exclude                                                                           
+             From       Include In                                                             
+Table Name   Comparison Comparison Defined By Types                                            
+------------ ---------- ---------- ----------------                                            
+Table        False      False      TableDef                                                    
                                                                                                
          Is      Is                                                    Referenced              
          Primary Compare Is            Is          Is       Referenced Property                
