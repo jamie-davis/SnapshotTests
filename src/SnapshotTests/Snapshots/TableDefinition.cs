@@ -50,7 +50,7 @@ namespace SnapshotTests.Snapshots
             DefiningTypes = new ReadOnlyCollection<Type>(definingTypes?.ToList() ?? new List<Type>());
         }
 
-        public void SetPrimaryKey(string fieldName)
+        internal void SetPrimaryKey(string fieldName)
         {
             var col = ColumnAdded(fieldName);
             col.IsPrimaryKey = true;
@@ -58,7 +58,7 @@ namespace SnapshotTests.Snapshots
                 _primaryKeys.Add(fieldName);
         }
 
-        public void SetCompareKey(string fieldName)
+        internal void SetCompareKey(string fieldName)
         {
             var col = ColumnAdded(fieldName);
             col.IsCompareKey = true;
@@ -66,7 +66,7 @@ namespace SnapshotTests.Snapshots
                 _compareKeys.Add(fieldName);
         }
 
-        public void SetUnpredictable(string fieldName)
+        internal void SetUnpredictable(string fieldName)
         {
             var col = ColumnAdded(fieldName);
             col.IsUnpredictable = true;
@@ -74,7 +74,7 @@ namespace SnapshotTests.Snapshots
             _unpredictableFields.Add(fieldName);
         }
 
-        public void SetPredictable(string fieldName)
+        internal void SetPredictable(string fieldName)
         {
             var col = ColumnAdded(fieldName);
             col.IsPredictable = true;
@@ -82,7 +82,7 @@ namespace SnapshotTests.Snapshots
             _predictableFields.Add(fieldName);
         }
 
-        public void SetReference(string columnName, string referencedTableName, string referencedPropertyName)
+        internal void SetReference(string columnName, string referencedTableName, string referencedPropertyName)
         {
             var col = ColumnAdded(columnName);
             if (col.References(referencedTableName, referencedPropertyName))
@@ -92,7 +92,7 @@ namespace SnapshotTests.Snapshots
             }
         }
 
-        public void SetRequired(string fieldName)
+        internal void SetRequired(string fieldName)
         {
             var col = ColumnAdded(fieldName);
             col.IsRequired = true;

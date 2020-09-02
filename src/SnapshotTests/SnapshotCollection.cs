@@ -114,7 +114,7 @@ namespace SnapshotTests
             snapshot.ReportContents(output, tables);
         }
 
-        internal TableDefinition GetTableDefinition(string tableName)
+        public TableDefinition GetTableDefinition(string tableName)
         {
             if (_tableDefinitions.TryGetValue(tableName, out var definition))
                 return definition;
