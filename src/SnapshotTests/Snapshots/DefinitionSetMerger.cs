@@ -7,14 +7,25 @@ namespace SnapshotTests.Snapshots
     {
         public static IEnumerable<TableDefinition> Merge(DefinitionSet loaded, List<TableDefinition> tablesInDefinitionOrder)
         {
-            foreach (var tableDefinition in loaded.Tables)
+            var loadedTables = loaded.Tables.ToList();
+            if (tablesInDefinitionOrder != null)
             {
-                var current = tablesInDefinitionOrder?
-                    .SingleOrDefault(t => t.TableName == tableDefinition.TableName);
-                if (current == null)
-                    yield return tableDefinition;
-                else
-                    yield return TableDefinitionMerger.Merge(current, tableDefinition);
+                foreach (var tableDefinition in tablesInDefinitionOrder)
+                {
+                    var current = loadedTables.SingleOrDefault(t => t.TableName == tableDefinition.TableName);
+                    if (current == null)
+                        yield return tableDefinition;
+                    else
+                    {
+                        loadedTables.Remove(current);
+                        yield return TableDefinitionMerger.Merge(tableDefinition, current);
+                    }
+                }
+            }
+
+            foreach (var tableDefinition in loadedTables)
+            {
+                yield return tableDefinition;
             }
         }
     }

@@ -28,13 +28,6 @@ namespace SnapshotTests.Tests.Snapshots
             public static int Id { get; set; }
         }
 
-        [SnapshotDefinition("LocalTable")]
-        public static class B_TableDef
-        {
-            [Unpredictable] 
-            public static int Id { get; set; }
-        }
-
         [SnapshotDefinition("PredictableTable")]
         public static class B_PredictableTable
         {
