@@ -149,5 +149,130 @@ namespace SnapshotTests.Tests.Snapshots
             output.FormatTable(resultRep); output.Report.Verify();
 
         }
+
+        [Test]
+        public void RowsCanBeRequiredForInserts()
+        {
+            //Arrange
+            var table1 = _om.Make<SnapshotObjectMother.Table>(1, 2, 3, 4, 5);
+            var table2 = _om.Make<SnapshotObjectMother.Table2>(1, 2, 3, 4, 5);
+            var refTable1 = _om.Make<SnapshotObjectMother.ReferencingTable>((1, 1),(2, 2));
+            var refTable2 = _om.Make<SnapshotObjectMother.ReferencingTable2>((1, 1),(2, 2));
+
+            void TakeSnapshot(string name)
+            {
+                var builder = _om.NewSnapshot(name);
+                table1.ToSnapshotTable(builder);
+                table2.ToSnapshotTable(builder);
+                refTable1.ToSnapshotTable(builder);
+                refTable2.ToSnapshotTable(builder);
+            }
+
+            TakeSnapshot("Before");
+            refTable1.Add(new SnapshotObjectMother.ReferencingTable { Id = 3, OtherId = 1, OtherVariable = "Inserted", ParentId = 4, Variable = "Inserted Variable" });
+            refTable2.Add(new SnapshotObjectMother.ReferencingTable2{ Id = 4, OtherVariable = "Inserted", ParentId = 2, Variable = "Inserted Variable"});
+            TakeSnapshot("After");
+
+            var before = _om.GetSnapshot("Before");
+            var after = _om.GetSnapshot("After");
+
+            var diffs = SnapshotDifferenceCalculator.GetDifferences(_om.Collection, before, after);
+
+            //Act
+            var result = ReferencedRowLocator.GetMissingRows(_om.Collection, diffs);
+
+            //Assert
+            var output = new Output();
+            var resultRep = result.Tables.AsReport(rep => rep.RemoveBufferLimit()
+                .AddColumn(t => t.TableDefinition.TableName)
+                .AddChild(t => t.Keys, trep => trep.RemoveBufferLimit()
+                    .AddColumn(c => c.ColumnName)
+                    .AddColumn(c => c.RequestedValue)));
+            output.FormatTable(resultRep); output.Report.Verify();
+
+        }
+
+        [Test]
+        public void RowsCanBeRequiredForDeletes()
+        {
+            //Arrange
+            var table1 = _om.Make<SnapshotObjectMother.Table>(1, 2, 3, 4, 5);
+            var table2 = _om.Make<SnapshotObjectMother.Table2>(1, 2, 3, 4, 5);
+            var refTable1 = _om.Make<SnapshotObjectMother.ReferencingTable>((1, 1),(2, 2));
+            var refTable2 = _om.Make<SnapshotObjectMother.ReferencingTable2>((1, 1),(2, 2));
+
+            void TakeSnapshot(string name)
+            {
+                var builder = _om.NewSnapshot(name);
+                table1.ToSnapshotTable(builder);
+                table2.ToSnapshotTable(builder);
+                refTable1.ToSnapshotTable(builder);
+                refTable2.ToSnapshotTable(builder);
+            }
+
+            TakeSnapshot("Before");
+            refTable1.RemoveAt(1);
+            refTable2.RemoveAt(0);
+            TakeSnapshot("After");
+
+            var before = _om.GetSnapshot("Before");
+            var after = _om.GetSnapshot("After");
+
+            var diffs = SnapshotDifferenceCalculator.GetDifferences(_om.Collection, before, after);
+
+            //Act
+            var result = ReferencedRowLocator.GetMissingRows(_om.Collection, diffs);
+
+            //Assert
+            var output = new Output();
+            var resultRep = result.Tables.AsReport(rep => rep.RemoveBufferLimit()
+                .AddColumn(t => t.TableDefinition.TableName)
+                .AddChild(t => t.Keys, trep => trep.RemoveBufferLimit()
+                    .AddColumn(c => c.ColumnName)
+                    .AddColumn(c => c.RequestedValue)));
+            output.FormatTable(resultRep); output.Report.Verify();
+
+        }
+        
+        [Test]
+        public void RequiredRowsThatWereInsertedAreNotRequested()
+        {
+            //Arrange
+            var table1 = _om.Make<SnapshotObjectMother.Table>(1, 2, 3, 4, 5);
+            var refTable1 = _om.Make<SnapshotObjectMother.ReferencingTable>((1, 1),(2, 2));
+
+            void TakeSnapshot(string name)
+            {
+                var builder = _om.NewSnapshot(name);
+                table1.ToSnapshotTable(builder);
+                refTable1.ToSnapshotTable(builder);
+            }
+
+            TakeSnapshot("Before");
+            table1.Add(new SnapshotObjectMother.Table { Id = 1000, Variable = "Inserted and required" });
+            refTable1.Add(new SnapshotObjectMother.ReferencingTable { Id = 3, OtherId = 1, OtherVariable = "Inserted", ParentId = 4, Variable = "Inserted Variable" });
+            refTable1.Add(new SnapshotObjectMother.ReferencingTable { Id = 4, OtherId = 2, OtherVariable = "Inserted", ParentId = 1000, Variable = "Inserted requires inserted ref" });
+            TakeSnapshot("After");
+
+            var before = _om.GetSnapshot("Before");
+            var after = _om.GetSnapshot("After");
+
+            var diffs = SnapshotDifferenceCalculator.GetDifferences(_om.Collection, before, after);
+
+            //Act
+            var result = ReferencedRowLocator.GetMissingRows(_om.Collection, diffs);
+
+            //Assert
+            var output = new Output();
+            output.WrapLine("We do not expect a request for the newly inserted row 1000");
+            var resultRep = result.Tables.AsReport(rep => rep.RemoveBufferLimit()
+                .AddColumn(t => t.TableDefinition.TableName)
+                .AddChild(t => t.Keys, trep => trep.RemoveBufferLimit()
+                    .AddColumn(c => c.ColumnName)
+                    .AddColumn(c => c.RequestedValue)));
+            output.FormatTable(resultRep); output.Report.Verify();
+
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 Table                                                                                          
 -----                                                                                          
-Difference Name                                                                                
----------- ------                                                                              
-Inserted   Test 3                                                                              
+Difference Name   A B C                                                                        
+---------- ------ - - -                                                                        
+Inserted   Test 3 5 7 6                                                                        
                                                                                                

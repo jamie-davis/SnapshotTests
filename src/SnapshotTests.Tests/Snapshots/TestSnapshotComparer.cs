@@ -159,13 +159,13 @@ namespace SnapshotTests.Tests.Snapshots
             {
                 new {Name = "Test 1", A = 5, B = 6, C = 7},
                 new {Name = "Test 2", A = 5, B = 6, C = 7},
-                new {Name = "Test 3", A = 5, B = 7, C = 6},
+                new {Name = "Test 3", A = 3, B = 7, C = 6},
             };
             var afterData = new[]
             {
                 new {Name = "Test 1", A = 5, B = 6, C = 7},
                 new {Name = "Test 2", A = 8, B = 6, C = 3},
-                new {Name = "Test 4", A = 5, B = 7, C = 6},
+                new {Name = "Test 4", A = 10, B = 7, C = 6},
             };
 
             var beforeBuilder = _collection.NewSnapshot("before");

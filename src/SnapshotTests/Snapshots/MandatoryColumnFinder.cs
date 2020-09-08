@@ -29,6 +29,26 @@ namespace SnapshotTests.Snapshots
 
         private static IEnumerable<string> GetColumns(TableDefinition tableDefinition, List<SnapshotTableDifferences> diffs)
         {
+            var insertsPresent = diffs.Any(d => d.RowDifferences.Any(rd => rd.DifferenceType == DifferenceType.Inserted));
+            IEnumerable<string> columnIteration = null;
+            columnIteration = insertsPresent 
+                ? GetAllColumns(tableDefinition) 
+                : SelectedRequiredColumns(tableDefinition, diffs);
+
+            foreach (var columnName in columnIteration) 
+                yield return columnName;
+        }
+
+        private static IEnumerable<string> GetAllColumns(TableDefinition tableDefinition)
+        {
+            foreach (var column in tableDefinition.Columns)
+            {
+                yield return column.Name;
+            }
+        }
+
+        private static IEnumerable<string> SelectedRequiredColumns(TableDefinition tableDefinition, List<SnapshotTableDifferences> diffs)
+        {
             if (tableDefinition.CompareKeys?.Any() ?? false)
             {
                 foreach (var compareKeyColumnName in tableDefinition.CompareKeys)
@@ -56,7 +76,8 @@ namespace SnapshotTests.Snapshots
             {
                 foreach (var reference in tableDiffs.TableDefinition.References)
                 {
-                    if (reference.TargetTable == tableDefinition.TableName && tableDiffs.RowDifferences.Any(d => ContainsReference(d, reference.OurField)))
+                    if (reference.TargetTable == tableDefinition.TableName &&
+                        tableDiffs.RowDifferences.Any(d => ContainsReference(d, reference.OurField)))
                     {
                         yield return reference.TargetField;
                     }
