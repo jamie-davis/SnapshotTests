@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SnapshotTests.Snapshots
@@ -35,7 +36,7 @@ namespace SnapshotTests.Snapshots
                 {
                     TableDefinition = kg.Key.TableName, 
                     KeyField = kg.Key.ColumnName,
-                    MissingRows = kg.Where(k => !td.RowDifferences.Any(row => ValueComparer.Compare(row?.After?.GetField(k.ColumnName), k.KeyValue) == 0))
+                    MissingRows = kg.Where(k => !td.RowDifferences.Any(row => IsMatchByKeyValue(row, k)))
                         .Select(k => k.KeyValue).ToList()
                 })
                 .Concat(requiredTableNotPresent.Select(r => new
@@ -53,6 +54,12 @@ namespace SnapshotTests.Snapshots
             return new AdditionalReferencedRows(missingKeys);
         }
 
+        private static bool IsMatchByKeyValue(RowDifference row, (TableDefinition ReferencedTableDefinition, string ColumnName, object KeyValue) k)
+        {
+            var match = ValueComparer.Compare(row?.After?.GetField(k.ColumnName), k.KeyValue) == 0;
+            return match;
+        }
+
         private static IEnumerable<(TableDefinition ReferencedTableDefinition, string ColumnName, object KeyValue)> GeyKeysByReferencedTable(SnapshotCollection collection, IReadOnlyCollection<SnapshotTableDifferences> tableDiffs)
         {
             foreach (var tableDiff in tableDiffs)
@@ -65,7 +72,7 @@ namespace SnapshotTests.Snapshots
                 {
                     var diffs = tableDiff
                         .RowDifferences
-                        .SelectMany(d => d.Differences.Differences)
+                        .SelectMany(d => GetDifferences(d))
                         .Where(d => d.Name == referenceColumn.Name);
                     foreach (var fieldDifference in diffs)
                     {
@@ -77,6 +84,34 @@ namespace SnapshotTests.Snapshots
                 }
             }
 
+        }
+
+        private static IEnumerable<FieldDifference> GetDifferences(RowDifference rowDifference)
+        {
+            if (rowDifference.Differences != null)
+            {
+                foreach (var difference in rowDifference.Differences.Differences)
+                {
+                    yield return difference;
+                }
+            }
+            else
+            {
+                if (rowDifference.Before != null)
+                {
+                    foreach (var fieldName in rowDifference.Before.GetFieldNames())
+                    {
+                        yield return new FieldDifference(fieldName, rowDifference.Before.GetField(fieldName), null);   
+                    }
+                }
+                if (rowDifference.After != null)
+                {
+                    foreach (var fieldName in rowDifference.After.GetFieldNames())
+                    {
+                        yield return new FieldDifference(fieldName, null, rowDifference.After.GetField(fieldName));   
+                    }
+                }
+            }
         }
     }
 }

@@ -1,0 +1,17 @@
+Table                                                                                          
+-----                                                                                          
+Difference Id                                                                                  
+---------- ------------                                                                        
+Reference  4                                                                                   
+Inserted   50                                                                                  
+Inserted   55                                                                                  
+                                                                                               
+ReferencingTable                                                                               
+----------------                                                                               
+                                                  Variable                                     
+Difference Id           Variable before           after                                        
+---------- ------------ ------------------------- ------------                                 
+Updated    1            Default variable for Id 1 Change                                       
+Inserted   30                                                                                  
+Inserted   40                                                                                  
+                                                                                               

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SnapshotTests.Snapshots
@@ -44,10 +45,13 @@ namespace SnapshotTests.Snapshots
                         .ToList();
 
                     var allDiffs = requiredSnapRows
-                        .Select(r => r.Difference ?? new RowDifference(new SnapshotRowKey(r.SnapRow, table), DifferenceType.Reference, r.SnapRow, r.SnapRow))
-                        .ToList();
+                        .Select(r => r.Difference ?? new RowDifference(new SnapshotRowKey(r.SnapRow, table), DifferenceType.Reference, r.SnapRow, r.SnapRow));
 
-                    var newDiffs = new SnapshotTableDifferences(allDiffs, additional.TableDefinition);
+                    if (current != null && current.RowDifferences.Any())
+                        //Add in any rows from the original differences that were not matched in the required rows.
+                        allDiffs = allDiffs.Concat(current.RowDifferences.Where(r => !requiredSnapRows.Any(sr => ReferenceEquals(sr.Difference, r))));
+
+                    var newDiffs = new SnapshotTableDifferences(allDiffs.ToList(), additional.TableDefinition);
                     result.Add(newDiffs);
                 }
             }

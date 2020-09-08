@@ -1,0 +1,15 @@
+Table                                                                                          
+-----                                                                                          
+                                                  Variable                                     
+Difference Id           Variable before           after                                        
+---------- ------------ ------------------------- ------------                                 
+Updated    1            Default variable for Id 1 edited                                       
+                                                                                               
+GuidKeyTable                                                                                   
+------------                                                                                   
+                                                OtherVariable OtherVariable                    
+Difference GuidKeyId                            before        after                            
+---------- ------------------------------------ ------------- -------------                    
+Updated    d04a9f30-deaa-4e87-b88a-c244d729bbca               edited                           
+Inserted   d0e1fdd6-51e5-467c-91fd-e07bfd8d9830                                                
+                                                                                               
