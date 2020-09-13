@@ -52,6 +52,8 @@ namespace SnapshotTests
                     Required = p.GetCustomAttribute<RequiredAttribute>(),
                     Key = p.GetCustomAttribute<KeyAttribute>(),
                     References = p.GetCustomAttribute<ReferencesAttribute>(),
+                    SortAsc = p.GetCustomAttribute<SortFieldAttribute>(),
+                    SortDesc = p.GetCustomAttribute<DescendingSortFieldAttribute>()
                 })
                 .ToList();
 
@@ -71,6 +73,12 @@ namespace SnapshotTests
 
                 if (attributes.Predictable != null)
                     definition.SetPredictable(attributes.Prop.Name);
+
+                if (attributes.SortAsc != null)
+                    definition.SetSortField(attributes.Prop.Name, SortOrder.Ascending, attributes.SortAsc.SortSequencer);
+
+                if (attributes.SortDesc != null)
+                    definition.SetSortField(attributes.Prop.Name, SortOrder.Descending, attributes.SortDesc.SortSequencer);
             }
 
             if (type.GetCustomAttribute<ExcludeFromComparisonAttribute>() != null)

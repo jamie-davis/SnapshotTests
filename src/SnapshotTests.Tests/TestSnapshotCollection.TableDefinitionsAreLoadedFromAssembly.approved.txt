@@ -6,5 +6,6 @@ Table Name   Key     Key
 DoNotCompare Id                                                                                
 ParentTable  Id                                                                                
 RelatedTable Id                                                                                
+SortedTable  Id                                                                                
 Table        Id                                                                                
                                                                                                

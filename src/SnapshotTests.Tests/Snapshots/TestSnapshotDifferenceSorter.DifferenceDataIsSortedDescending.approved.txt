@@ -1,0 +1,8 @@
+TheTable                                                                                       
+--------                                                                                       
+Difference Id           Name before  Name after   Id before    Id after                        
+---------- ------------ ------------ ------------ ------------ ------------                    
+Updated    3            Zed          Zed+         3            3                               
+Updated    2            Xavier       Xavier+      2            2                               
+Updated    1            Alice        Alice+       1            1                               
+                                                                                               

@@ -21,12 +21,27 @@ namespace SnapshotTests.Snapshots
             public string OurField { get; }
         }
 
+        public class SortField
+        {
+            public string Field { get; }
+            public SortOrder SortOrder { get; }
+            public int? SortIndex { get; }
+
+            public SortField(string field, SortOrder sortOrder, int? sortIndex)
+            {
+                Field = field;
+                SortOrder = sortOrder;
+                SortIndex = sortIndex;
+            }
+        }
+
         private readonly List<string> _primaryKeys = new List<string>();
         private readonly List<string> _compareKeys = new List<string>();
         private readonly List<string> _unpredictableFields = new List<string>();
         private readonly List<string> _predictableFields = new List<string>();
         private readonly List<Reference> _references = new List<Reference>();
         private readonly List<string> _requiredColumns = new List<string>();
+        private readonly List<SortField> _sortFields = new List<SortField>();
         private List<SnapshotColumnInfo> _columns = new List<SnapshotColumnInfo>();
 
         /// <summary>
@@ -43,6 +58,7 @@ namespace SnapshotTests.Snapshots
         public IEnumerable<string> Predictable => _predictableFields;
         public IEnumerable<Reference> References => _references;
         public IEnumerable<string> RequiredColumns => _requiredColumns;
+        public IEnumerable<SortField> SortFields => _sortFields;
 
         public TableDefinition(string tableName, IEnumerable<Type> definingTypes = null)
         {
@@ -112,6 +128,14 @@ namespace SnapshotTests.Snapshots
                 existing.TypeObserved(observedType);
 
             return existing;
+        }
+
+        internal void SetSortField(string fieldName, SortOrder order, int? sortSequencer = null)
+        {
+            var col = ColumnAdded(fieldName);
+            col.SortDirection = order;
+            col.SortIndex = sortSequencer;
+            _sortFields.Add(new SortField(fieldName, order, sortSequencer));
         }
     }
 }

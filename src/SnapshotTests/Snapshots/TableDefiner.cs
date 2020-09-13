@@ -69,5 +69,27 @@
             _tableDefinition.SetReference(fieldName, tableReferenced, fieldReferenced);
             return this;
         }
+
+        /// <summary>
+        /// Define that the table should be sorted by a field. Calling this method will result in differences for the table being sorted by this field in ascending order.
+        /// <remarks>To sort by multiple fields, call this method multiple times.</remarks>
+        /// </summary>
+        /// <param name="fieldName">The sort field</param>
+        public TableDefiner Sort(string fieldName)
+        {
+            _tableDefinition.SetSortField(fieldName, SortOrder.Ascending);
+            return this;
+        }
+
+        /// <summary>
+        /// Define that the table should be sorted by a field. Calling this method will result in differences for the table being sorted by this field in descending order.
+        /// <remarks>To sort by multiple fields, call this method multiple times.</remarks>
+        /// </summary>
+        /// <param name="fieldName">The sort field</param>
+        public TableDefiner SortDescending(string fieldName)
+        {
+            _tableDefinition.SetSortField(fieldName, SortOrder.Descending);
+            return this;
+        }
     }
 }   

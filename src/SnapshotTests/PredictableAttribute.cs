@@ -9,7 +9,7 @@ namespace SnapshotTests
     /// table configurations from a data source, and may automatically declare a field as unpredictable. However, in the test cases, the field's
     /// value is actually deterministic and need not be replaced, and the literal value is preferred in comparisons.</remarks>
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, Inherited = true)]
     public class PredictableAttribute : Attribute
     {
     }

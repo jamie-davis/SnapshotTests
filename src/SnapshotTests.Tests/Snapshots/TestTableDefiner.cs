@@ -153,7 +153,7 @@ namespace SnapshotTests.Tests.Snapshots
             _definer.IsReference("Field1", "Table", "Id");
 
             //Assert
-            Action action = () => _definer.IsReference("Field1", "Table2", "Id2");
+            Action action = () => _definer.IsReference("Field1", "Table2", "Id2"); //Same field references two different tables
             action.Should().Throw<AmbiguosReferenceInSnapshotColumn>()
                 .Where(x => x.FieldName == "Field1"
                             && x.ConflictingPropertyName == "Id2" && x.ConflictingTableName == "Table2"
@@ -217,6 +217,64 @@ namespace SnapshotTests.Tests.Snapshots
 
             //Assert
             _collection.GetTableDefinition(TestTableName).IncludeInComparison.Should().BeFalse();
+        }
+
+        [Test]
+        public void SortFieldCanBeSet()
+        {
+            //Act
+            _definer.Sort("Field1");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+                .Should().Be("Field1 Ascending");
+        }
+
+        [Test]
+        public void MultipleSortFieldsCanBeSet()
+        {
+            //Act
+            _definer.Sort("Field1");
+            _definer.Sort("Field2");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+                .Should().Be("Field1 Ascending, Field2 Ascending");
+        }
+
+        [Test]
+        public void DescendingSortFieldCanBeSet()
+        {
+            //Act
+            _definer.SortDescending("Field1");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+                .Should().Be("Field1 Descending");
+        }
+
+        [Test]
+        public void MultipleDescendingSortFieldsCanBeSet()
+        {
+            //Act
+            _definer.SortDescending("Field1");
+            _definer.SortDescending("Field2");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+                .Should().Be("Field1 Descending, Field2 Descending");
+        }
+
+        [Test]
+        public void MixedOrderSortFieldsCanBeSet()
+        {
+            //Act
+            _definer.Sort("Field1");
+            _definer.SortDescending("Field2");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+                .Should().Be("Field1 Ascending, Field2 Descending");
         }
     }
 }

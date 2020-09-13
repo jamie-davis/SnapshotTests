@@ -387,5 +387,45 @@ namespace SnapshotTests.Tests.Snapshots
             //Assert
             string.Join(", ", result.DefiningTypes.Select(t => t.Name)).Should().Be($"{nameof(FakeDefiningType1)}, {nameof(FakeDefiningType3)}, {nameof(FakeDefiningType2)}, {nameof(FakeDefiningType3)}");
         }
+
+        [Test]
+        public void SortFieldsAreOverridden()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetSortField("A", SortOrder.Ascending);
+            left.SetSortField("B", SortOrder.Descending);
+
+            right.SetSortField("X", SortOrder.Ascending);
+            right.SetSortField("Y", SortOrder.Descending);
+            right.SetSortField("Z", SortOrder.Descending);
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+                .Should().Be("X Ascending, Y Descending, Z Descending");
+        }
+
+        [Test]
+        public void SortFieldsArePreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetSortField("A", SortOrder.Ascending);
+            left.SetSortField("B", SortOrder.Descending);
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+                .Should().Be("A Ascending, B Descending");
+        }
     }
 }

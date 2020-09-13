@@ -11,6 +11,7 @@ namespace SnapshotTests.Snapshots
         internal static SnapshotDifferences ExtractDifferences(SnapshotCollection collection, Snapshot before, Snapshot after)
         {
             var tableDiffs = SnapshotDifferenceCalculator.GetDifferences(collection, before, after);
+            tableDiffs = SnapshotDifferenceSorter.SortDifferences(collection, tableDiffs);
             tableDiffs = DifferenceRegulator.CleanDifferences(collection, tableDiffs, before);
             return new SnapshotDifferences(tableDiffs);
         }

@@ -67,6 +67,16 @@ namespace SnapshotTests.Snapshots
         /// </summary>
         public bool IsRequired { get; set; }
 
+        /// <summary>
+        /// If this field is part of the sort order for the table
+        /// </summary>
+        public SortOrder? SortDirection { get; set; }
+
+        /// <summary>
+        /// If this field is part of the sort for the table, this indicates the order in which the field sorts should be applied.
+        /// </summary>
+        public int? SortIndex { get; set; }
+
         public SnapshotColumnInfo(string columnName)
         {
             Name = columnName;

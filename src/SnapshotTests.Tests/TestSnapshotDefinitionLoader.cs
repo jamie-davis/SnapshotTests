@@ -40,6 +40,39 @@ namespace SnapshotTests.Tests
             public static int Id { get; set; }
         }
 
+        [SnapshotDefinition("SortedTable")]
+        public static class SortedTable
+        {
+            [Predictable] 
+            public static int Id { get; set; }
+
+            [SortField]
+            public static string Name { get; set; }
+        }
+
+        [SnapshotDefinition("DescSortedTable")]
+        public static class DescSortedTable
+        {
+            [Predictable] 
+            public static int Id { get; set; }
+
+            [DescendingSortField]
+            public static string Name { get; set; }
+        }
+
+        [SnapshotDefinition("CompoundSortTable")]
+        public static class CompoundSortedTable
+        {
+            [Predictable] 
+            public static int Id { get; set; }
+
+            [SortField(1)]
+            public static string Name { get; set; }
+
+            [DescendingSortField(0)]
+            public static int Priority { get; set; }
+        }
+
         #endregion
 
         [Test]

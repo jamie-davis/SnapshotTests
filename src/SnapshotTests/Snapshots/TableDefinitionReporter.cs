@@ -26,7 +26,8 @@ namespace SnapshotTests.Snapshots
                     .AddColumn(d => d.TableName)
                     .AddColumn(d => d.ExcludeFromComparison)
                     .AddColumn(d => d.IncludeInComparison)
-                    .AddColumn(d => string.Join(", ", d.DefiningTypes.Select(t => t.Name)), cc => cc.Heading("Defined By Types"))
+                    .AddColumn(d => string.Join(", ", d.DefiningTypes.Select(t => t.Name)),
+                        cc => cc.Heading("Defined By Types"))
                     .AddChild(d => d.Columns, colRep => colRep.RemoveBufferLimit()
                         .AddColumn(c => c.Name)
                         .AddColumn(c => c.IsPrimaryKey)
@@ -35,7 +36,10 @@ namespace SnapshotTests.Snapshots
                         .AddColumn(c => c.IsPredictable)
                         .AddColumn(c => c.IsRequired)
                         .AddColumn(c => c.ReferencedTableName)
-                        .AddColumn(c => c.ReferencedPropertyName));
+                        .AddColumn(c => c.ReferencedPropertyName)
+                        .AddColumn(c => c.SortDirection)
+                        .AddColumn(c => c.SortIndex)
+                    );
 
                 if (addTitle)
                     rep.Title("Table Definitions");

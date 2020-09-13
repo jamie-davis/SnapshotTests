@@ -32,6 +32,7 @@ namespace SnapshotTests.Snapshots
             MergeReferences(main, changes, tableDefinition);
             GetRequiredFields(main, changes, tableDefinition);
             GetUnpredictableFields(main, changes, tableDefinition);
+            GetSortFields(main, changes, tableDefinition);
             return tableDefinition;
         }
 
@@ -84,6 +85,13 @@ namespace SnapshotTests.Snapshots
             var source = changes.CompareKeys.Any() ? changes : main;
             foreach (var key in source.CompareKeys) 
                 tableDefinition.SetCompareKey(key);
+        }
+
+        private static void GetSortFields(TableDefinition main, TableDefinition changes, TableDefinition tableDefinition)
+        {
+            var source = changes.SortFields.Any() ? changes : main;
+            foreach (var sortField in source.SortFields) 
+                tableDefinition.SetSortField(sortField.Field, sortField.SortOrder, sortField.SortIndex);
         }
     }
 }

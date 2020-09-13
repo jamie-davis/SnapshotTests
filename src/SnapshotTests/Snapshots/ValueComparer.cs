@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -8,13 +9,27 @@ namespace SnapshotTests.Snapshots
     {
         private static readonly MethodInfo UseComparerMethod;
 
+        internal static IComparer<object> Comparer = new ComparerImpl();
+
+        private class ComparerImpl : IComparer<object>
+        {
+            #region Implementation of IComparer<in object>
+
+            int IComparer<object>.Compare(object x, object y)
+            {
+                return Compare(x, y);
+            }
+
+            #endregion
+        }
+
         static ValueComparer()
         {
             UseComparerMethod = typeof(ValueComparer).GetMethod(nameof(UseComparer), BindingFlags.NonPublic | BindingFlags.Static);
             Debug.Assert(UseComparerMethod != null);
         }
 
-        internal static int? Compare(object mine, object other)
+        internal static int Compare(object mine, object other)
         {
             if (mine == null)
                 return other == null ? 0 : -1;

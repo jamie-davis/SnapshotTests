@@ -8,7 +8,7 @@ namespace SnapshotTests
     /// key and the referenced row can be flagged to be included in the difference output as a "Referenced" row. This attribute should be
     /// used in a class flagged with the <see cref="SnapshotDefinitionAttribute"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, Inherited = true)]
     public class ReferencesAttribute : Attribute
     {
         public ReferencesAttribute(string snapshotTableName, string keyPropertyName)
