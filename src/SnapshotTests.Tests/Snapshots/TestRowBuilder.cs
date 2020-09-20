@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 using SnapshotTests.Snapshots;
+using SnapshotTests.Tests.TestDoubles;
 using TestConsoleLib;
 using TestConsoleLib.Testing;
 
@@ -62,6 +64,63 @@ namespace SnapshotTests.Tests.Snapshots
             var output = new Output();
             _snapshot.ReportContents(output, "Test");
             output.Report.Verify();
+        }
+    }
+    [TestFixture]
+    public class TestSnapshot
+    {
+        private const string TestTableName = "Test";
+        private SnapshotCollection _collection;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _collection = new SnapshotCollection();
+            _collection.DefineTable("Test").CompareKey("Id");
+        }
+
+        [Test]
+        public void SnapshotHasNoTimestampIfItHasNoData()
+        {
+            //Arrange
+            _collection.NewSnapshot("Test");
+
+            //Act
+            var snapshot = _collection.GetSnapshot("Test");
+
+            //Assert
+            snapshot.DataCapturedTime.Should().BeNull();
+        }
+
+        [Test]
+        public void SnapshotHasTimestampIfRowCreated()
+        {
+            //Arrange
+            var builder = _collection.NewSnapshot("Test");
+
+            //Act
+            var snapshot = _collection.GetSnapshot("Test");
+            builder.AddNewRow("Test");
+
+            //Assert
+            snapshot.DataCapturedTime.Should().NotBeNull();
+        }
+
+        [Test]
+        public void SnapshotTimestampAwaitsClockTick()
+        {
+            //Arrange
+            var start = DateTime.Parse("2020-09-19 20:19");
+            var ticked = DateTime.Parse("2020-09-19 20:19:00.001");
+            _collection.SetTimeSource(new FakeTimeSource(start, start, start, start, start, start, ticked));
+            var builder = _collection.NewSnapshot("Test");
+
+            //Act
+            var snapshot = _collection.GetSnapshot("Test");
+            builder.AddNewRow("Test");
+
+            //Assert
+            snapshot.DataCapturedTime.Should().Be(ticked);
         }
     }
 }

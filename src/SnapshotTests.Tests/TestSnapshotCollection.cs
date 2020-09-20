@@ -5,6 +5,7 @@ using NUnit.Framework;
 using SnapshotTests.Exceptions;
 using SnapshotTests.Snapshots;
 using SnapshotTests.Tests.Snapshots;
+using SnapshotTests.Tests.TestDoubles;
 using TestConsoleLib;
 using TestConsoleLib.Testing;
 
@@ -410,6 +411,31 @@ namespace SnapshotTests.Tests
             var output = new Output();
             Action test = () => snapshots.GetSnapshotReport("Before", output);
             test.Should().Throw<SnapshotNotFoundException>();
+        }
+
+        [Test]
+        public void InitTimeIsSet()
+        {
+            //Arrange/Act
+            var start = DateTime.UtcNow;
+            var snapshots = new SnapshotCollection();
+
+            //Assert
+            snapshots.InitialisationTime.Ticks.Should().BeGreaterOrEqualTo(start.Ticks);
+        }
+
+        [Test]
+        public void InitTimeIsSetUsingTimeSource()
+        {
+            //Arrange
+            var time = DateTime.Parse("2020-09-19 19:53:01");
+            var snapshots = new SnapshotCollection();
+
+            //Act
+            snapshots.SetTimeSource(new FakeTimeSource(time));
+
+            //Assert
+            snapshots.InitialisationTime.Should().Be(time);
         }
     }
 }

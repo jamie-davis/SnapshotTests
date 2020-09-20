@@ -5,9 +5,14 @@ namespace SnapshotTests.Snapshots
 {
     internal static class TrackerMaker
     {
-        public static List<ISubstitutableValueTracker> Make(ColumnValueSet columnValueSet)
+        public static List<ISubstitutableValueTracker> Make(ColumnValueSet columnValueSet,
+            SnapshotCollection snapshotCollection)
         {
-            return new List<ISubstitutableValueTracker> {new DefaultValueTracker(columnValueSet.Column.Name)};
+            return new List<ISubstitutableValueTracker>
+            {
+                new DateTimeValueTracker(columnValueSet.Column.Name, TimeRangeExtractor.Extract(snapshotCollection)),
+                new DefaultValueTracker(columnValueSet.Column.Name)
+            };
         }
     }
 }

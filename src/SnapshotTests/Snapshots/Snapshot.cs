@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TestConsoleLib;
 
@@ -6,17 +7,23 @@ namespace SnapshotTests.Snapshots
 {
     internal class Snapshot
     {
+        private readonly ITimeSource _timeSource;
         private Dictionary<string, SnapshotTable> _tables = new Dictionary<string, SnapshotTable>();
 
         internal string Name { get; }
+        public DateTime? DataCapturedTime { get; set; }
 
-        internal Snapshot(string name)
+        internal Snapshot(string name, ITimeSource timeSource)
         {
+            _timeSource = timeSource;
             Name = name;
         }
 
         internal SnapshotRow AddRow(TableDefinition table)
         {
+            if (DataCapturedTime == null)
+                DataCapturedTime = GetTickedTime();
+
             if (!_tables.TryGetValue(table.TableName, out var snapshotTable))
             {
                 snapshotTable = new SnapshotTable(table);
@@ -24,6 +31,22 @@ namespace SnapshotTests.Snapshots
             }
 
             return snapshotTable.AddRow();
+        }
+
+        /// <summary>
+        /// Let the clock tick to guarantee out capture time cannot occur inside the data.
+        /// Note we busy wait here, but that is intentional.
+        /// </summary>
+        private DateTime GetTickedTime()
+        {
+            var time = _timeSource.GetUtcTime();
+            var ticked = _timeSource.GetUtcTime();
+            while (ticked == time)
+            {
+                ticked = _timeSource.GetUtcTime();
+            }
+
+            return ticked;
         }
 
         internal void ReportContents(Output output, params string[] tables)

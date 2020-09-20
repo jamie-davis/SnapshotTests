@@ -14,7 +14,7 @@ namespace SnapshotTests.Snapshots
                     .SelectMany(u => UnpredictableValueScanner.Scan(u, tableDiffs))
                     .ToList();
 
-            return ValueSubstituter.Substitute(unpredictableValues, tableDiffs);
+            return ValueSubstituter.Substitute(unpredictableValues, tableDiffs, collection);
         }
     }
 }

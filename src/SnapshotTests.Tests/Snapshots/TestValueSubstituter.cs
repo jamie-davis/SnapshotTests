@@ -55,7 +55,7 @@ namespace SnapshotTests.Tests.Snapshots
             var columnValueSets = UnpredictableValueScanner.Scan(unpredictableCols, diffs);
             
             //Act
-            var result = ValueSubstituter.Substitute(columnValueSets, diffs);
+            var result = ValueSubstituter.Substitute(columnValueSets, diffs, _om.Collection);
 
             //Assert
             var output = new Output();
@@ -98,7 +98,7 @@ namespace SnapshotTests.Tests.Snapshots
             var result = diffs;
             foreach (var columnValueSet in columnValueSets)
             {
-                result = ValueSubstituter.Substitute(columnValueSet, result);
+                result = ValueSubstituter.Substitute(columnValueSet, result, _om.Collection);
             }
 
             //Assert

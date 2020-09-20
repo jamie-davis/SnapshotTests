@@ -14,13 +14,39 @@ namespace SnapshotTests
     /// </summary>
     public class SnapshotCollection
     {
+        class DefaultTimeSource : ITimeSource
+        {
+            #region Implementation of ITimeSource
+
+            public DateTime GetUtcTime()
+            {
+                return DateTime.UtcNow;
+            }
+
+            #endregion
+        }
+
         private Dictionary<string, TableDefinition> _tableDefinitions = new Dictionary<string, TableDefinition>();
         private Dictionary<string, Snapshot> _snapshots = new Dictionary<string, Snapshot>();
         private List<TableDefinition> _tablesInDefinitionOrder = new List<TableDefinition>();
         internal IEnumerable<TableDefinition> TablesInDefinitionOrder => _tablesInDefinitionOrder;
+        internal DateTime InitialisationTime { get; set; }
+
+        private ITimeSource _timeSource = new DefaultTimeSource();
+        private bool _timeSourceFixed;
+
+        /// <summary>
+        /// Supply a custom method of assigning a wall clock time. This is used to categorise date/time values that appear in snapshot data.
+        /// </summary>
+        public void SetTimeSource(ITimeSource timeSource)
+        {
+            _timeSource = timeSource;
+            InitialisationTime = _timeSource.GetUtcTime();
+        }
 
         public SnapshotCollection()
         {
+            InitialisationTime = _timeSource.GetUtcTime();
         }
 
         /// <summary>
@@ -30,7 +56,7 @@ namespace SnapshotTests
         /// <param name="typeFilter">Optional expression used to limit the types included. For example, you may wish to split configurations
         /// by namespace, and use this filter to select only the namespace you intend to configure your collection. If no filter is supplied
         /// then all configuration types in the assembly will be included.</param>
-        public SnapshotCollection(Assembly configAssembly, Func<Type, bool> typeFilter = null)
+        public SnapshotCollection(Assembly configAssembly, Func<Type, bool> typeFilter = null) : this()
         {
             var loaded = SnapshotDefinitionLoader.Load(configAssembly, typeFilter);
             LoadTableDefinitionSet(loaded);
@@ -43,7 +69,7 @@ namespace SnapshotTests
         /// </summary>
         /// <param name="configScope">The type that contains the nested configuration types.</param>
         /// <param name="typeFilter">Optional expression used to limit the types included.</param>
-        public SnapshotCollection(Type configScope, Func<Type, bool> typeFilter = null)
+        public SnapshotCollection(Type configScope, Func<Type, bool> typeFilter = null) : this()
         {
             var loaded = SnapshotDefinitionLoader.Load(configScope, typeFilter);
             LoadTableDefinitionSet(loaded);
@@ -74,9 +100,10 @@ namespace SnapshotTests
 
         public SnapshotBuilder NewSnapshot(string name)
         {
+            _timeSourceFixed = true;
             if (!_snapshots.TryGetValue(name, out var snapshot))
             {
-                snapshot = new Snapshot(name);
+                snapshot = new Snapshot(name, _timeSource);
                 _snapshots[name] = snapshot;
             }
 
@@ -128,6 +155,11 @@ namespace SnapshotTests
                 return snapshot;
 
             return null;
+        }
+
+        internal IEnumerable<Snapshot> GetSnapshots()
+        {
+            return _snapshots.Values.ToList();
         }
 
         public void ReportChanges(string beforeSnapshot, string afterSnapshot, Output output)

@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using SnapshotTests.Snapshots;
 using SnapshotTests.Tests.Snapshots.TestSupportUtils;
+using SnapshotTests.Tests.TestDoubles;
 using TestConsoleLib;
 using TestConsoleLib.Testing;
 
@@ -15,13 +16,14 @@ namespace SnapshotTests.Tests.Snapshots
         public TestDiffValueSubstituter()
         {
             _om = new SnapshotObjectMother();
+            _om.Collection.SetTimeSource(new FakeTimeSource("2020-09-20 09:13:21", "2020-09-20 09:13:42", "2020-09-20 09:14:42"));
         }
 
         [Test]
         public void ValuesAreReplacedInDiff()
         {
             //Arrange
-            var table1 = _om.Make<SnapshotObjectMother.Unpredictables>(Guid.Parse("14123F35-519B-4DB0-957C-B773BF5D3082"));
+            var table1 = _om.Make<SnapshotObjectMother.Unpredictables>(Guid.Parse("14123F35-519B-4DB0-957C-B773BF5D3082"), Guid.Parse("BCC981FA-FE9A-4A28-87C0-469901D6683A"));
 
             void TakeSnapshot(string name)
             {
@@ -31,12 +33,16 @@ namespace SnapshotTests.Tests.Snapshots
 
             table1[0].TimeStamp = DateTime.Parse("2020-07-18 08:45");
             table1[0].Int = 100;
+            table1[1].TimeStamp = DateTime.Parse("2020-07-18 08:45");
+            table1[1].Int = 100;
 
             TakeSnapshot("Before");
 
-            table1[0].TimeStamp = DateTime.Parse("2020-07-18 08:46");
+            table1[0].TimeStamp = DateTime.Parse("2020-09-20 09:14:42");
             table1[0].Int = 101;
             table1[0].NullableInt = 100;
+
+            table1[1].TimeStamp = DateTime.Parse("2020-09-20 19:14:42");
 
             TakeSnapshot("After");
 
@@ -50,7 +56,7 @@ namespace SnapshotTests.Tests.Snapshots
                 .SelectMany(u => UnpredictableValueScanner.Scan(u, diffs))
                 .ToList();
             var substitutes = columnValues
-                .Select(uv => new SubstituteValues( uv, SubstitutionMaker.Make(uv.Values, TrackerMaker.Make(uv))))
+                .Select(uv => new SubstituteValues( uv, SubstitutionMaker.Make(uv.Values, TrackerMaker.Make(uv, _om.Collection))))
                 .ToList();
 
             //Act
@@ -104,7 +110,7 @@ namespace SnapshotTests.Tests.Snapshots
                 .SelectMany(u => UnpredictableValueScanner.Scan(u, diffs))
                 .ToList();
             var substitutes = columnValues
-                .Select(uv => new SubstituteValues(uv, SubstitutionMaker.Make(uv.Values, TrackerMaker.Make(uv))))
+                .Select(uv => new SubstituteValues(uv, SubstitutionMaker.Make(uv.Values, TrackerMaker.Make(uv, _om.Collection))))
                 .ToList();
 
             //Act
