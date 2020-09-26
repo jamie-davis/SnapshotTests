@@ -1,0 +1,25 @@
+Ranges:                                                                                        
+                                                                                               
+Start               End                 Name                                                   
+------------------- ------------------- ------                                                 
+12/07/2020 10:37:00 12/07/2020 10:38:00 First                                                  
+12/07/2020 10:38:00 12/07/2020 10:39:00 Second                                                 
+12/07/2020 10:39:00 12/07/2020 10:55:00 Third                                                  
+                                                                                               
+Substitutions:                                                                                 
+                                                                                               
+UTC                 Value                 Substitute                                           
+------------------- --------------------- --------------                                       
+12/05/2020 11:10:00 (localised date/time) TestCol-1                                            
+12/05/2020 11:11:00 (localised date/time) TestCol-2                                            
+12/05/2020 11:12:00 (localised date/time) TestCol-3                                            
+12/07/2020 10:38:00 (localised date/time) TestCol@First                                        
+12/07/2020 10:38:00 (localised date/time) TestCol@First                                        
+12/07/2020 10:39:00 (localised date/time) TestCol@Second                                       
+12/07/2020 10:39:00 (localised date/time) TestCol@Second                                       
+12/07/2020 10:38:01 (localised date/time) TestCol@Second                                       
+12/07/2020 10:38:02 (localised date/time) TestCol@Second                                       
+12/07/2020 10:39:03 (localised date/time) TestCol@Third                                        
+12/07/2020 10:39:04 (localised date/time) TestCol@Third                                        
+<NULL>              <NULL>                <NULL>                                               
+                                                                                               

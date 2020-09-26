@@ -53,7 +53,9 @@ namespace SnapshotTests
                     Key = p.GetCustomAttribute<KeyAttribute>(),
                     References = p.GetCustomAttribute<ReferencesAttribute>(),
                     SortAsc = p.GetCustomAttribute<SortFieldAttribute>(),
-                    SortDesc = p.GetCustomAttribute<DescendingSortFieldAttribute>()
+                    SortDesc = p.GetCustomAttribute<DescendingSortFieldAttribute>(),
+                    UtcDateTime = p.GetCustomAttribute<UTCAttribute>(),
+                    LocalDateTime = p.GetCustomAttribute<LocalAttribute>(),
                 })
                 .ToList();
 
@@ -79,6 +81,12 @@ namespace SnapshotTests
 
                 if (attributes.SortDesc != null)
                     definition.SetSortField(attributes.Prop.Name, SortOrder.Descending, attributes.SortDesc.SortSequencer);
+
+                if (attributes.UtcDateTime != null)
+                    definition.SetDateType(attributes.Prop.Name, DateTimeKind.Utc);
+
+                if (attributes.LocalDateTime != null)
+                    definition.SetDateType(attributes.Prop.Name, DateTimeKind.Local);
             }
 
             if (type.GetCustomAttribute<ExcludeFromComparisonAttribute>() != null)

@@ -6,12 +6,12 @@ Name      Comparison Comparison Types
 --------- ---------- ---------- -------                                                        
 TestTable False      False                                                                     
                                                                                                
-         Is      Is                                                    Referenced                
-         Primary Compare Is            Is          Is       Referenced Property   Sort      Sort 
-    Name Key     Key     Unpredictable Predictable Required Table Name Name       Direction Index
-    ---- ------- ------- ------------- ----------- -------- ---------- ---------- --------- -----
-    RefB False   False   False         False       False    B          BKey                      
-    RefD False   False   False         False       False    D          DKey                      
-    RefC False   False   False         False       False    C          CKey                      
+         Is      Is                                                    Referenced                     
+         Primary Compare Is            Is          Is       Referenced Property   Sort      Sort  Date
+    Name Key     Key     Unpredictable Predictable Required Table Name Name       Direction Index Type
+    ---- ------- ------- ------------- ----------- -------- ---------- ---------- --------- ----- ----
+    RefB False   False   False         False       False    B          BKey                           
+    RefD False   False   False         False       False    D          DKey                           
+    RefC False   False   False         False       False    C          CKey                           
                                                                                                
                                                                                                

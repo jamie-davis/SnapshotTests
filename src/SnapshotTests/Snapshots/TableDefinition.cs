@@ -42,6 +42,8 @@ namespace SnapshotTests.Snapshots
         private readonly List<Reference> _references = new List<Reference>();
         private readonly List<string> _requiredColumns = new List<string>();
         private readonly List<SortField> _sortFields = new List<SortField>();
+        private readonly List<string> _utcDateFields = new List<string>();
+        private readonly List<string> _localDateFields = new List<string>();
         private List<SnapshotColumnInfo> _columns = new List<SnapshotColumnInfo>();
 
         /// <summary>
@@ -59,6 +61,8 @@ namespace SnapshotTests.Snapshots
         public IEnumerable<Reference> References => _references;
         public IEnumerable<string> RequiredColumns => _requiredColumns;
         public IEnumerable<SortField> SortFields => _sortFields;
+        public IEnumerable<string> UtcDates => _utcDateFields;
+        public IEnumerable<string> LocalDates => _localDateFields;
 
         public TableDefinition(string tableName, IEnumerable<Type> definingTypes = null)
         {
@@ -136,6 +140,22 @@ namespace SnapshotTests.Snapshots
             col.SortDirection = order;
             col.SortIndex = sortSequencer;
             _sortFields.Add(new SortField(fieldName, order, sortSequencer));
+        }
+
+        internal void SetDateType(string fieldName, DateTimeKind dateType)
+        {
+            var col = ColumnAdded(fieldName);
+            col.DateType = dateType;
+            if (dateType == DateTimeKind.Local)
+            {
+                _localDateFields.Add(fieldName);
+                _utcDateFields.Remove(fieldName);
+            }
+            else if (dateType == DateTimeKind.Utc)
+            {
+                _utcDateFields.Add(fieldName);
+                _localDateFields.Remove(fieldName);
+            }
         }
     }
 }

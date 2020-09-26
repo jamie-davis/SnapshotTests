@@ -39,6 +39,7 @@ namespace SnapshotTests.Snapshots
                         .AddColumn(c => c.ReferencedPropertyName)
                         .AddColumn(c => c.SortDirection)
                         .AddColumn(c => c.SortIndex)
+                        .AddColumn(c => c.DateType)
                     );
 
                 if (addTitle)

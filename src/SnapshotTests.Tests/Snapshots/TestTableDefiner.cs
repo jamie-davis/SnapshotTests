@@ -276,5 +276,38 @@ namespace SnapshotTests.Tests.Snapshots
             string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("Field1 Ascending, Field2 Descending");
         }
+
+        [Test]
+        public void UtcDateFieldsCanBeSet()
+        {
+            //Act
+            _definer.Utc("Field1").Utc("Field2");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).UtcDates)
+                .Should().Be("Field1, Field2");
+        }
+
+        [Test]
+        public void LocalDateFieldsCanBeSet()
+        {
+            //Act
+            _definer.Local("Field1").Local("Field2");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).LocalDates)
+                .Should().Be("Field1, Field2");
+        }
+
+        [Test]
+        public void DateWillBeOfLastSpecifiedKind()
+        {
+            //Act
+            _definer.Local("Field1").Utc("Field2").Utc("Field1").Local("Field2");
+
+            //Assert
+            $"UTC: {string.Join(", ", _collection.GetTableDefinition(TestTableName).UtcDates)} Local: {string.Join(", ", _collection.GetTableDefinition(TestTableName).LocalDates)}"
+                .Should().Be("UTC: Field1 Local: Field2");
+        }
     }
 }

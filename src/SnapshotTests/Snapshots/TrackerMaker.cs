@@ -10,7 +10,7 @@ namespace SnapshotTests.Snapshots
         {
             return new List<ISubstitutableValueTracker>
             {
-                new DateTimeValueTracker(columnValueSet.Column.Name, TimeRangeExtractor.Extract(snapshotCollection)),
+                new DateTimeValueTracker(columnValueSet.Column, TimeRangeExtractor.Extract(snapshotCollection)),
                 new DefaultValueTracker(columnValueSet.Column.Name)
             };
         }

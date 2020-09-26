@@ -12,12 +12,14 @@ namespace SnapshotTests.Snapshots.ValueTrackers
         private readonly DefaultValueTracker _default;
         private string _columnName;
         private readonly List<NamedTimeRange> _namedTimeRanges;
+        private bool _isLocal;
 
-        public DateTimeValueTracker(string columnName, List<NamedTimeRange> namedTimeRanges)
+        public DateTimeValueTracker(SnapshotColumnInfo column, List<NamedTimeRange> namedTimeRanges)
         {
-            _columnName = columnName;
+            _columnName = column.Name;
+            _isLocal = column.DateType == DateTimeKind.Local;
             _namedTimeRanges = namedTimeRanges;
-            _default = new DefaultValueTracker(columnName);
+            _default = new DefaultValueTracker(column.Name);
         }
 
         #region Implementation of ISubstitutableValueTracker
@@ -27,6 +29,9 @@ namespace SnapshotTests.Snapshots.ValueTrackers
         public string GetSubstitute(object value)
         {
             if (value == null) return null;
+
+            if (_isLocal && value is DateTime dateValue)
+                value = dateValue.ToUniversalTime();
 
             if (value is DateTime valueDate && GetRange(valueDate, out var range))
             {

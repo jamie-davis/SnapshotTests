@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SnapshotTests.Snapshots;
 using TestConsoleLib;
 using TestConsoleLib.Testing;
@@ -71,6 +72,24 @@ namespace SnapshotTests.Tests
 
             [DescendingSortField(0)]
             public static int Priority { get; set; }
+        }
+
+        [SnapshotDefinition("DateTable")]
+        public static class DateTable
+        {
+            [Predictable] 
+            public static int Id { get; set; }
+
+            [Unpredictable]
+            public static DateTime DateTimeDefault { get; set; }
+
+            [Unpredictable]
+            [UTC]
+            public static DateTime DateTimeUtc { get; set; }
+
+            [Unpredictable]
+            [Local]
+            public static DateTime DateTimeLocal { get; set; }
         }
 
         #endregion

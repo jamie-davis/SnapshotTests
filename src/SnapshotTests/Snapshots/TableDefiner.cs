@@ -1,4 +1,6 @@
-﻿namespace SnapshotTests.Snapshots
+﻿using System;
+
+namespace SnapshotTests.Snapshots
 {
     public sealed class TableDefiner
     {
@@ -89,6 +91,31 @@
         public TableDefiner SortDescending(string fieldName)
         {
             _tableDefinition.SetSortField(fieldName, SortOrder.Descending);
+            return this;
+        }
+
+        /// <summary>
+        /// Define that a field contains a UTC date. This is only useful on unpredictable date fields, but it allows the field to be tagged as a "mid-test" timestamp. The collection
+        /// needs to know how to handle the date values for this feature to work. You can apply this setting to any field, but it will have no effect unless the field is an
+        /// unpredictable date that has its value set to the current time.
+        /// </summary>
+        /// <param name="fieldName">The field name</param>
+        public TableDefiner Utc(string fieldName)
+        {
+            _tableDefinition.SetDateType(fieldName, DateTimeKind.Utc);
+            return this;
+        }
+
+        /// <summary>
+        /// Define that a field contains a local date. This is only useful on unpredictable date fields, but it allows the field to be tagged as a "mid-test" timestamp. The collection
+        /// needs to know how to handle the date values for this feature to work. You can apply this setting to any field, but it will have no effect unless the field is an
+        /// unpredictable date that has its value set to the current time.
+        /// <remarks>The assumption is made that "local" means the current machine's local date time. You cannot specify a particular time zone.</remarks>
+        /// </summary>
+        /// <param name="fieldName">The field name</param>
+        public TableDefiner Local(string fieldName)
+        {
+            _tableDefinition.SetDateType(fieldName, DateTimeKind.Local);
             return this;
         }
     }

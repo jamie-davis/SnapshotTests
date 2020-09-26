@@ -77,6 +77,11 @@ namespace SnapshotTests.Snapshots
         /// </summary>
         public int? SortIndex { get; set; }
 
+        /// <summary>
+        /// This indicates whether the field contains a UTC date or a local date. This will be null if no kind has been specified.
+        /// </summary>
+        public DateTimeKind? DateType { get; set; }
+
         public SnapshotColumnInfo(string columnName)
         {
             Name = columnName;
