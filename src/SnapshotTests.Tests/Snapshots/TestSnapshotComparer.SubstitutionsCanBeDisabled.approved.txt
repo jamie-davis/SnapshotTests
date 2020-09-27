@@ -1,0 +1,8 @@
+Table                                                                                          
+-----                                                                                          
+Difference Name   A       B C                                                                  
+---------- ------ ------- - -------                                                            
+Updated    Test 2 5 ==> 8 6 7 ==> 3                                                            
+Deleted    Test 3 3       7 6                                                                  
+Inserted   Test 4 10      7 6                                                                  
+                                                                                               

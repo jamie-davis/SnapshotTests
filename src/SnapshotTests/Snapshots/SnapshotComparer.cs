@@ -11,23 +11,22 @@ namespace SnapshotTests.Snapshots
     /// </summary>
     internal static class SnapshotComparer
     {
-        internal static void ReportDifferences(SnapshotCollection collection, Snapshot before, Snapshot after, Output output)
+        internal static void ReportDifferences(SnapshotCollection collection, Snapshot before, Snapshot after, Output output, ChangeReportOptions changeReportOptions = ChangeReportOptions.Default)
         {
-            var differences = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
+            var differences = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, (changeReportOptions & ChangeReportOptions.NoSubs) == 0);
             var first = true;
             foreach (var tableDifference in differences.TableDifferences)
             {
-                var report = tableDifference.RowDifferences.AsReport(rep => ReportDifferences(rep, tableDifference, output));
+                var report = tableDifference.RowDifferences.AsReport(rep => ReportDifferences(rep, tableDifference, output, changeReportOptions));
                 if (!first)
                     output.WriteLine();
 
                 output.FormatTable(report);
                 first = false;
             }
-
         }
 
-        private static void ReportDifferences(ReportParameters<RowDifference> rep, SnapshotTableDifferences tableDifferences, Output output)
+        private static void ReportDifferences(ReportParameters<RowDifference> rep, SnapshotTableDifferences tableDifferences, Output output, ChangeReportOptions changeReportOptions)
         {
             var differenceCols
                 = tableDifferences.RowDifferences

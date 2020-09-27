@@ -37,7 +37,7 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
@@ -75,7 +75,7 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
@@ -134,7 +134,95 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
+
+            //Act
+            var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
+
+            //Assert
+            var output = new Output();
+            result.Report(output);
+            output.Report.Verify();
+        }
+
+        [Test]
+        public void DifferenceDataContainsSubstitutions()
+        {
+            //Arrange
+            var collection = new SnapshotCollection();
+            collection.DefineTable("TheTable")
+                .PrimaryKey("Id")
+                .IsUnpredictable("Id");
+
+            void AddRow(SnapshotBuilder snapshot, int id, string name)
+            {
+                var add = snapshot.AddNewRow("TheTable");
+                add["Id"] = id;
+                add["Name"] = name;
+            }
+
+            void AddData(SnapshotBuilder snapshot, string names)
+            {
+                var id = 1;
+                foreach (var name in names.Split(','))
+                {
+                    AddRow(snapshot, id++, name);
+                }
+            }
+
+            var beforeBuilder = collection.NewSnapshot("Before");
+            AddData(beforeBuilder, "A,B,C");
+
+            var afterBuilder = collection.NewSnapshot("After");
+            AddData(afterBuilder, "D,E,F");
+
+            var before = collection.GetSnapshot("Before");
+            var after = collection.GetSnapshot("After");
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
+
+            //Act
+            var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
+
+            //Assert
+            var output = new Output();
+            result.Report(output);
+            output.Report.Verify();
+        }
+
+        [Test]
+        public void SubstitutionsCanBeSuppressed()
+        {
+            //Arrange
+            var collection = new SnapshotCollection();
+            collection.DefineTable("TheTable")
+                .PrimaryKey("Id")
+                .IsUnpredictable("Id");
+
+            void AddRow(SnapshotBuilder snapshot, int id, string name)
+            {
+                var add = snapshot.AddNewRow("TheTable");
+                add["Id"] = id;
+                add["Name"] = name;
+            }
+
+            void AddData(SnapshotBuilder snapshot, string names)
+            {
+                var id = 1;
+                foreach (var name in names.Split(','))
+                {
+                    AddRow(snapshot, id++, name);
+                }
+            }
+
+            var beforeBuilder = collection.NewSnapshot("Before");
+            AddData(beforeBuilder, "A,B,C");
+
+            var afterBuilder = collection.NewSnapshot("After");
+            AddData(afterBuilder, "D,E,F");
+
+            var before = collection.GetSnapshot("Before");
+            var after = collection.GetSnapshot("After");
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, false);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());

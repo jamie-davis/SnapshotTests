@@ -25,7 +25,7 @@ namespace SnapshotTests.Tests.Snapshots
         }
 
         [Test]
-        public void GuidKeysAreSubstituted()
+        public void KeysAreSubstituted()
         {
             //Arrange
             var table1 = _om.Make<SnapshotObjectMother.Table>(1, 2, 3, 4, 5);
@@ -53,7 +53,44 @@ namespace SnapshotTests.Tests.Snapshots
             var tables = diffs.Select(d => d.TableDefinition).ToList();
             
             //Act
-            var result = UnpredictableValueRefiner.Refine(_om.Collection, diffs);
+            var result = UnpredictableValueRefiner.Refine(_om.Collection, diffs, true);
+
+            //Assert
+            var output = new Output();
+            result.Report(output);
+            output.Report.Verify();
+        }
+
+        [Test]
+        public void SubstitutionCanBeDisabled()
+        {
+            //Arrange
+            var table1 = _om.Make<SnapshotObjectMother.Table>(1, 2, 3, 4, 5);
+            var refTable1 = _om.Make<SnapshotObjectMother.ReferencingTable>((1, 1),(2, 1));
+
+            void TakeSnapshot(string name)
+            {
+                var builder = _om.NewSnapshot(name);
+                table1.ToSnapshotTable(builder);
+                refTable1.ToSnapshotTable(builder);
+            }
+
+            TakeSnapshot("Before");
+            refTable1[0].Variable = "edited";
+            refTable1[1].Variable = "edited";
+            refTable1[0].ParentId = table1[3].Id;
+            refTable1[1].ParentId = table1[4].Id;
+            TakeSnapshot("After");
+
+            var before = _om.GetSnapshot("Before");
+            var after = _om.GetSnapshot("After");
+
+            var diffs = DifferenceRegulator.ExpandDifferences(_om.Collection, SnapshotDifferenceCalculator.GetDifferences(_om.Collection, before, after), before);
+
+            var tables = diffs.Select(d => d.TableDefinition).ToList();
+            
+            //Act
+            var result = UnpredictableValueRefiner.Refine(_om.Collection, diffs, false);
 
             //Assert
             var output = new Output();

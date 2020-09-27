@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using SnapshotTests.Exceptions;
@@ -162,7 +163,7 @@ namespace SnapshotTests
             return _snapshots.Values.ToList();
         }
 
-        public void ReportChanges(string beforeSnapshot, string afterSnapshot, Output output)
+        public void ReportChanges(string beforeSnapshot, string afterSnapshot, Output output, ChangeReportOptions compareOptions = ChangeReportOptions.Default)
         {
             if (!_snapshots.TryGetValue(beforeSnapshot, out var before))
             {
@@ -174,7 +175,7 @@ namespace SnapshotTests
                 throw new SnapshotNotFoundException(afterSnapshot);
             }
 
-            SnapshotComparer.ReportDifferences(this, before, after, output);
+            SnapshotComparer.ReportDifferences(this, before, after, output, compareOptions);
         }
 
         /// <summary>

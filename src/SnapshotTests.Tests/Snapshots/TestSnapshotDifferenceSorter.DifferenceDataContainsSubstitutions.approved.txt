@@ -1,0 +1,8 @@
+TheTable                                                                                       
+--------                                                                                       
+Difference Id           Name before  Name after   Id before    Id after                        
+---------- ------------ ------------ ------------ ------------ ------------                    
+Updated    1            A            D            Id-1         Id-1                            
+Updated    2            B            E            Id-2         Id-2                            
+Updated    3            C            F            Id-3         Id-3                            
+                                                                                               

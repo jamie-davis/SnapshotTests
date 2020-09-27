@@ -23,11 +23,11 @@ namespace SnapshotTests.Snapshots
     /// </summary>
     internal static class DifferenceRegulator
     {
-        public static List<SnapshotTableDifferences> CleanDifferences(SnapshotCollection collection, List<SnapshotTableDifferences> tableDiffs, Snapshot before)
+        public static List<SnapshotTableDifferences> CleanDifferences(SnapshotCollection collection, List<SnapshotTableDifferences> tableDiffs, Snapshot before, bool performSubstitution)
         {
             tableDiffs = ExpandDifferences(collection, tableDiffs, before);
 
-            return UnpredictableValueRefiner.Refine(collection, tableDiffs);
+            return UnpredictableValueRefiner.Refine(collection, tableDiffs, performSubstitution);
         }
 
         internal static List<SnapshotTableDifferences> ExpandDifferences(SnapshotCollection collection, List<SnapshotTableDifferences> tableDiffs, Snapshot before)

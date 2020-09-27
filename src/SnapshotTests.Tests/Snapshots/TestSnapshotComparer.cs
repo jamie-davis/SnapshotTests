@@ -182,5 +182,36 @@ namespace SnapshotTests.Tests.Snapshots
             output.Report.Verify();
         }
 
+        [Test]
+        public void SubstitutionsCanBeDisabled()
+        {
+            //Arrange
+            var beforeData = new[]
+            {
+                new {Name = "Test 1", A = 5, B = 6, C = 7},
+                new {Name = "Test 2", A = 5, B = 6, C = 7},
+                new {Name = "Test 3", A = 3, B = 7, C = 6},
+            };
+            var afterData = new[]
+            {
+                new {Name = "Test 1", A = 5, B = 6, C = 7},
+                new {Name = "Test 2", A = 8, B = 6, C = 3},
+                new {Name = "Test 4", A = 10, B = 7, C = 6},
+            };
+
+            var beforeBuilder = _collection.NewSnapshot("before");
+            beforeData.ToSnapshotTable(beforeBuilder, "Table", "Name");
+            var afterBuilder = _collection.NewSnapshot("after");
+            afterData.ToSnapshotTable(afterBuilder, "Table");
+            _collection.DefineTable("Table").IsUnpredictable("A").IsUnpredictable("B").IsUnpredictable("C");
+
+            var output = new Output();
+
+            //Act
+            SnapshotComparer.ReportDifferences(_collection, _collection.GetSnapshot("before"), _collection.GetSnapshot("after"), output, ChangeReportOptions.NoSubs);
+
+            //Assert
+            output.Report.Verify();
+        }
     }
 }
