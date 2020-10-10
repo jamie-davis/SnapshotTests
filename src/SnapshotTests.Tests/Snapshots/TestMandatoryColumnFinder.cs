@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using NUnit.Framework;
 using SnapshotTests.Snapshots;
 using SnapshotTests.Tests.Snapshots.TestSupportUtils;
 using TestConsole.OutputFormatting;
@@ -24,20 +27,12 @@ namespace SnapshotTests.Tests.Snapshots
             _om = new SnapshotObjectMother();
         }
 
-        [Test]
-        public void MandatoryColumnsAreReturnedForCollection()
+        private List<SnapshotTableDifferences> MakeDifferences()
         {
-            //Arrange
-            var definer = _om.Collection.DefineTable("LocalTable")
-                .CompareKey("CompareKey")
-                .CompareKey("CompareKey2")
-                .IsReference("ParentId", "ReferencingTable", "OtherId")
-                .IsRequired("Required");
-            
             var table1 = _om.Make<SnapshotObjectMother.Table>(1, 2, 3, 4, 5);
             var table2 = _om.Make<SnapshotObjectMother.Table2>(1, 2, 3, 4, 5);
-            var refTable1 = _om.Make<SnapshotObjectMother.ReferencingTable>((1, 1),(2, 1));
-            var refTable2 = _om.Make<SnapshotObjectMother.ReferencingTable2>((1, 3),(2, 4));
+            var refTable1 = _om.Make<SnapshotObjectMother.ReferencingTable>((1, 1), (2, 1));
+            var refTable2 = _om.Make<SnapshotObjectMother.ReferencingTable2>((1, 3), (2, 4));
             var localTable = _om.Make<LocalTable>((1, 2));
 
             void TakeSnapshot(string name)
@@ -66,6 +61,20 @@ namespace SnapshotTests.Tests.Snapshots
             var after = _om.GetSnapshot("After");
 
             var diffs = SnapshotDifferenceCalculator.GetDifferences(_om.Collection, before, after);
+            return diffs;
+        }
+
+        [Test]
+        public void MandatoryColumnsAreReturnedForCollection()
+        {
+            //Arrange
+            var definer = _om.Collection.DefineTable("LocalTable")
+                .CompareKey("CompareKey")
+                .CompareKey("CompareKey2")
+                .IsReference("ParentId", "ReferencingTable", "OtherId")
+                .IsRequired("Required");
+            
+            var diffs = MakeDifferences();
 
             //Act
             var result = MandatoryColumnFinder.Find(_om.Collection, diffs);
@@ -79,6 +88,69 @@ namespace SnapshotTests.Tests.Snapshots
             );
             output.FormatTable(report);
             output.Report.Verify();
+        }
+
+        [Test]
+        public void ExcludedMandatoryColumnsAreNotReturnedForCollection()
+        {
+            //Arrange
+            var definer = _om.Collection.DefineTable("LocalTable")
+                .CompareKey("CompareKey")
+                .CompareKey("CompareKey2")
+                .IsReference("ParentId", "ReferencingTable", "OtherId")
+                .IsRequired("Required")
+                .IsRequired("Required2")
+                .Exclude("Required");
+            
+            var diffs = MakeDifferences();
+
+            //Act
+            var result = MandatoryColumnFinder.Find(_om.Collection, diffs);
+
+            //Assert
+            result.Any(r => r.Columns.Contains("Required")).Should().BeFalse();
+        }
+
+        [Test]
+        public void ExcludedCompareKeyColumnsColumnsAreNotReturnedForCollection()
+        {
+            //Arrange
+            var definer = _om.Collection.DefineTable("LocalTable")
+                .CompareKey("CompareKey")
+                .CompareKey("CompareKey2")
+                .IsReference("ParentId", "ReferencingTable", "OtherId")
+                .IsRequired("Required")
+                .IsRequired("Required2")
+                .Exclude("CompareKey");
+            
+            var diffs = MakeDifferences();
+
+            //Act
+            var result = MandatoryColumnFinder.Find(_om.Collection, diffs);
+
+            //Assert
+            result.Any(r => r.Columns.Contains("CompareKey")).Should().BeFalse();
+        }
+
+        [Test]
+        public void ExcludedPrimaryKeyColumnsColumnsAreNotReturnedForCollection()
+        {
+            //Arrange
+            var definer = _om.Collection.DefineTable("LocalTable")
+                .PrimaryKey("CompareKey")
+                .PrimaryKey("CompareKey2")
+                .IsReference("ParentId", "ReferencingTable", "OtherId")
+                .IsRequired("Required")
+                .IsRequired("Required2")
+                .Exclude("CompareKey");
+            
+            var diffs = MakeDifferences();
+
+            //Act
+            var result = MandatoryColumnFinder.Find(_om.Collection, diffs);
+
+            //Assert
+            result.Any(r => r.Columns.Contains("CompareKey")).Should().BeFalse();
         }
     }
 }

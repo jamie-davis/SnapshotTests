@@ -68,6 +68,21 @@ namespace SnapshotTests.Snapshots
         public bool IsRequired { get; set; }
 
         /// <summary>
+        /// Indicates that this field should be excluded from comparisons. By default all fields are included, this indicator will
+        /// cause the column to be ignored in difference calculation. If an excluded column must later be included, set <see cref="IsIncluded"/>
+        /// to override this indicator.
+        /// <remarks>If <see cref="IsExcluded"/> and <see cref="IsIncluded"/> are both set, the field will be included.</remarks>
+        /// </summary>
+        public bool IsExcluded { get; set; }
+
+        /// <summary>
+        /// Indicates whether this field is explicitly included in comparisons. This is used to override a the exclusion of a column.
+        /// If the column was not excluded, this will have no effect.
+        /// <remarks>If <see cref="IsExcluded"/> and <see cref="IsIncluded"/> are both set, the field will be included.</remarks>
+        /// </summary>
+        public bool IsIncluded { get; set; }
+
+        /// <summary>
         /// If this field is part of the sort order for the table
         /// </summary>
         public SortOrder? SortDirection { get; set; }

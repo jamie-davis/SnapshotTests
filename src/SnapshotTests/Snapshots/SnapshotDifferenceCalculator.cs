@@ -24,7 +24,7 @@ namespace SnapshotTests.Snapshots
 
             var differences = beforeKeys.Intersect(afterKeys)
                 .Select(k => new {Key = k, Before = before.GetRow(k, tableDefinition.TableName), After = after.GetRow(k, tableDefinition.TableName)})
-                .Select(rr => new {rr.Key, Differences = RowDataComparer.Compare(rr.Key, rr.Before, rr.After)})
+                .Select(rr => new {rr.Key, Differences = RowDataComparer.Compare(tableDefinition, rr.Key, rr.Before, rr.After)})
                 .Where(m => !m.Differences.Matched)
                 .ToList();
 

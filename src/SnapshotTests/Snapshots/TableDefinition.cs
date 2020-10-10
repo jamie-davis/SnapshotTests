@@ -37,11 +37,13 @@ namespace SnapshotTests.Snapshots
 
         private readonly List<string> _primaryKeys = new List<string>();
         private readonly List<string> _compareKeys = new List<string>();
-        private readonly List<string> _unpredictableFields = new List<string>();
-        private readonly List<string> _predictableFields = new List<string>();
+        private readonly List<string> _unpredictableColumns = new List<string>();
+        private readonly List<string> _predictableColumns = new List<string>();
         private readonly List<Reference> _references = new List<Reference>();
         private readonly List<string> _requiredColumns = new List<string>();
-        private readonly List<SortField> _sortFields = new List<SortField>();
+        private readonly List<string> _excludedColumns = new List<string>();
+        private readonly List<string> _includedColumns = new List<string>();
+        private readonly List<SortField> _sortColumns = new List<SortField>();
         private readonly List<string> _utcDateFields = new List<string>();
         private readonly List<string> _localDateFields = new List<string>();
         private List<SnapshotColumnInfo> _columns = new List<SnapshotColumnInfo>();
@@ -50,17 +52,20 @@ namespace SnapshotTests.Snapshots
         /// Note, this can be null if the table was not defined using a type
         /// </summary>
         public ReadOnlyCollection<Type> DefiningTypes { get; }
+
         public bool ExcludeFromComparison { get; internal set; }
         public bool IncludeInComparison { get; internal set; }
         public string TableName { get; }
         public IEnumerable<string> PrimaryKeys => _primaryKeys;
         public IEnumerable<string> CompareKeys => _compareKeys;
         public IEnumerable<SnapshotColumnInfo> Columns => _columns;
-        public IEnumerable<string> Unpredictable => _unpredictableFields;
-        public IEnumerable<string> Predictable => _predictableFields;
+        public IEnumerable<string> Unpredictable => _unpredictableColumns;
+        public IEnumerable<string> Predictable => _predictableColumns;
         public IEnumerable<Reference> References => _references;
         public IEnumerable<string> RequiredColumns => _requiredColumns;
-        public IEnumerable<SortField> SortFields => _sortFields;
+        public IEnumerable<string> IncludedColumns => _includedColumns;
+        public IEnumerable<string> ExcludedColumns => _excludedColumns;
+        public IEnumerable<SortField> SortColumns => _sortColumns;
         public IEnumerable<string> UtcDates => _utcDateFields;
         public IEnumerable<string> LocalDates => _localDateFields;
 
@@ -91,7 +96,7 @@ namespace SnapshotTests.Snapshots
             var col = ColumnAdded(fieldName);
             col.IsUnpredictable = true;
             col.IsPredictable = false;
-            _unpredictableFields.Add(fieldName);
+            _unpredictableColumns.Add(fieldName);
         }
 
         internal void SetPredictable(string fieldName)
@@ -99,7 +104,7 @@ namespace SnapshotTests.Snapshots
             var col = ColumnAdded(fieldName);
             col.IsPredictable = true;
             col.IsUnpredictable = false;
-            _predictableFields.Add(fieldName);
+            _predictableColumns.Add(fieldName);
         }
 
         internal void SetReference(string columnName, string referencedTableName, string referencedPropertyName)
@@ -119,6 +124,22 @@ namespace SnapshotTests.Snapshots
             _requiredColumns.Add(fieldName);
         }
 
+        internal void ExcludeColumnFromComparison(string fieldName)
+        {
+            if (_excludedColumns.Contains(fieldName)) return;
+            var col = ColumnAdded(fieldName);
+            col.IsExcluded = true;
+            _excludedColumns.Add(fieldName);
+        }
+
+        internal void IncludeColumnInComparison(string fieldName)
+        {
+            if (_includedColumns.Contains(fieldName)) return;
+            var col = ColumnAdded(fieldName);
+            col.IsIncluded = true;
+            _includedColumns.Add(fieldName);
+        }
+
         internal SnapshotColumnInfo ColumnAdded(string columnName, Type observedType = null)
         {
             var existing = _columns.SingleOrDefault(c => c.Name == columnName);
@@ -134,12 +155,12 @@ namespace SnapshotTests.Snapshots
             return existing;
         }
 
-        internal void SetSortField(string fieldName, SortOrder order, int? sortSequencer = null)
+        internal void SetSortColumn(string fieldName, SortOrder order, int? sortSequencer = null)
         {
             var col = ColumnAdded(fieldName);
             col.SortDirection = order;
             col.SortIndex = sortSequencer;
-            _sortFields.Add(new SortField(fieldName, order, sortSequencer));
+            _sortColumns.Add(new SortField(fieldName, order, sortSequencer));
         }
 
         internal void SetDateType(string fieldName, DateTimeKind dateType)
@@ -157,5 +178,7 @@ namespace SnapshotTests.Snapshots
                 _localDateFields.Remove(fieldName);
             }
         }
+
+        
     }
 }

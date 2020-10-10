@@ -30,7 +30,7 @@ namespace SnapshotTests.Snapshots
                 {
                     var beforeRow = beforeRows[snapshotRowKey];
                     var afterRow = afterRows[snapshotRowKey];
-                    var match = RowDataComparer.Compare(snapshotRowKey, beforeRow, afterRow);
+                    var match = RowDataComparer.Compare(tableDefinition, snapshotRowKey, beforeRow, afterRow);
                     if (!match.Matched)
                         return false;
                 }

@@ -33,6 +33,7 @@ namespace SnapshotTests.Snapshots
             GetRequiredFields(main, changes, tableDefinition);
             GetUnpredictableFields(main, changes, tableDefinition);
             GetSortFields(main, changes, tableDefinition);
+            GetExcludedFields(main, changes, tableDefinition);
             return tableDefinition;
         }
 
@@ -89,9 +90,15 @@ namespace SnapshotTests.Snapshots
 
         private static void GetSortFields(TableDefinition main, TableDefinition changes, TableDefinition tableDefinition)
         {
-            var source = changes.SortFields.Any() ? changes : main;
-            foreach (var sortField in source.SortFields) 
-                tableDefinition.SetSortField(sortField.Field, sortField.SortOrder, sortField.SortIndex);
+            var source = changes.SortColumns.Any() ? changes : main;
+            foreach (var sortField in source.SortColumns) 
+                tableDefinition.SetSortColumn(sortField.Field, sortField.SortOrder, sortField.SortIndex);
+        }
+
+        private static void GetExcludedFields(TableDefinition main, TableDefinition changes, TableDefinition tableDefinition)
+        {
+            foreach (var fieldName in main.ExcludedColumns.Concat(changes.ExcludedColumns).Except(changes.IncludedColumns)) 
+                tableDefinition.ExcludeColumnFromComparison(fieldName);
         }
     }
 }

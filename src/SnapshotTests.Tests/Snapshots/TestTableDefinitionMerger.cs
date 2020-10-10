@@ -395,18 +395,18 @@ namespace SnapshotTests.Tests.Snapshots
             var left = new TableDefinition(Table);
             var right = new TableDefinition(Table);
 
-            left.SetSortField("A", SortOrder.Ascending);
-            left.SetSortField("B", SortOrder.Descending);
+            left.SetSortColumn("A", SortOrder.Ascending);
+            left.SetSortColumn("B", SortOrder.Descending);
 
-            right.SetSortField("X", SortOrder.Ascending);
-            right.SetSortField("Y", SortOrder.Descending);
-            right.SetSortField("Z", SortOrder.Descending);
+            right.SetSortColumn("X", SortOrder.Ascending);
+            right.SetSortColumn("Y", SortOrder.Descending);
+            right.SetSortColumn("Z", SortOrder.Descending);
 
             //Act
             var result = TableDefinitionMerger.Merge(left, right);
 
             //Assert
-            string.Join(", ", result.SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+            string.Join(", ", result.SortColumns.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("X Ascending, Y Descending, Z Descending");
         }
 
@@ -417,15 +417,87 @@ namespace SnapshotTests.Tests.Snapshots
             var left = new TableDefinition(Table);
             var right = new TableDefinition(Table);
 
-            left.SetSortField("A", SortOrder.Ascending);
-            left.SetSortField("B", SortOrder.Descending);
+            left.SetSortColumn("A", SortOrder.Ascending);
+            left.SetSortColumn("B", SortOrder.Descending);
 
             //Act
             var result = TableDefinitionMerger.Merge(left, right);
 
             //Assert
-            string.Join(", ", result.SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+            string.Join(", ", result.SortColumns.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("A Ascending, B Descending");
+        }
+
+        [Test]
+        public void ExcludedFieldsArePreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.ExcludeColumnFromComparison("Excluded");
+            left.ExcludeColumnFromComparison("Excluded2");
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.ExcludedColumns).Should().Be("Excluded, Excluded2");
+        }
+
+        [Test]
+        public void ExcludedFieldsAreMerged()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.ExcludeColumnFromComparison("Excluded");
+            right.ExcludeColumnFromComparison("Excluded2");
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.ExcludedColumns).Should().Be("Excluded, Excluded2");
+        }
+
+        [Test]
+        public void IncludedFieldsAreNoLongerExcluded()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.ExcludeColumnFromComparison("Excluded1");
+            left.ExcludeColumnFromComparison("Excluded2");
+            left.ExcludeColumnFromComparison("Excluded3");
+            right.IncludeColumnInComparison("Excluded2");
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.ExcludedColumns).Should().Be("Excluded1, Excluded3");
+        }
+
+        [Test]
+        public void IncludedFieldsAreNotPreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.ExcludeColumnFromComparison("Excluded1");
+            left.ExcludeColumnFromComparison("Excluded2");
+            left.ExcludeColumnFromComparison("Excluded3");
+            right.IncludeColumnInComparison("Excluded2");
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            string.Join(", ", result.IncludedColumns).Should().Be("");
         }
     }
 }

@@ -35,6 +35,8 @@ namespace SnapshotTests.Snapshots
                         .AddColumn(c => c.IsUnpredictable)
                         .AddColumn(c => c.IsPredictable)
                         .AddColumn(c => c.IsRequired)
+                        .AddColumn(c => c.IsIncluded)
+                        .AddColumn(c => c.IsExcluded)
                         .AddColumn(c => c.ReferencedTableName)
                         .AddColumn(c => c.ReferencedPropertyName)
                         .AddColumn(c => c.SortDirection)

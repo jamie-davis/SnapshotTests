@@ -79,7 +79,7 @@ namespace SnapshotTests.Snapshots
         /// <param name="fieldName">The sort field</param>
         public TableDefiner Sort(string fieldName)
         {
-            _tableDefinition.SetSortField(fieldName, SortOrder.Ascending);
+            _tableDefinition.SetSortColumn(fieldName, SortOrder.Ascending);
             return this;
         }
 
@@ -90,7 +90,7 @@ namespace SnapshotTests.Snapshots
         /// <param name="fieldName">The sort field</param>
         public TableDefiner SortDescending(string fieldName)
         {
-            _tableDefinition.SetSortField(fieldName, SortOrder.Descending);
+            _tableDefinition.SetSortColumn(fieldName, SortOrder.Descending);
             return this;
         }
 
@@ -116,6 +116,29 @@ namespace SnapshotTests.Snapshots
         public TableDefiner Local(string fieldName)
         {
             _tableDefinition.SetDateType(fieldName, DateTimeKind.Local);
+            return this;
+        }
+
+        /// <summary>
+        /// Indicate that a field should be excluded from comparisons. By default all fields are included. If an excluded field must be included, <see cref="Include"/> it
+        /// to override this indicator.
+        /// <remarks>If <see cref="Exclude"/> and <see cref="Include"/> are both specified, the field will be included.</remarks>
+        /// </summary>
+        /// <param name="fieldName">The field name</param>
+        public TableDefiner Exclude(string fieldName)
+        {
+            _tableDefinition.ExcludeColumnFromComparison(fieldName);
+            return this;
+        }
+
+        /// <summary>
+        /// Indicate that a field should be included in comparisons. By default all fields are included, so this will have no effect unless <see cref="Exclude"/> is also used.
+        /// <remarks>If <see cref="Exclude"/> and <see cref="Include"/> are both specified, the field will be included.</remarks>
+        /// </summary>
+        /// <param name="fieldName">The field name</param>
+        public TableDefiner Include(string fieldName)
+        {
+            _tableDefinition.IncludeColumnInComparison(fieldName);
             return this;
         }
     }

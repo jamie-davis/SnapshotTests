@@ -1,10 +1,11 @@
 Tables Defined                                                                                 
 --------------                                                                                 
-             Primary Compare                                                                   
-Table Name   Key     Key                                                                       
------------- ------- -------                                                                   
-DoNotCompare Id                                                                                
-ParentTable  Id                                                                                
-RelatedTable Id                                                                                
-SortedTable  Id                                                                                
+                          Primary Compare                                                      
+Table Name                Key     Key                                                          
+------------------------- ------- -------                                                      
+DoNotCompare              Id                                                                   
+ParentTable               Id                                                                   
+RelatedTable              Id                                                                   
+SortedTable               Id                                                                   
+TableWithExcludedProperty Id                                                                   
                                                                                                

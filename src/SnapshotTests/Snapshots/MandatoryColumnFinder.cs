@@ -41,7 +41,8 @@ namespace SnapshotTests.Snapshots
 
         private static IEnumerable<string> GetAllColumns(TableDefinition tableDefinition)
         {
-            foreach (var column in tableDefinition.Columns)
+            var includedColumns = tableDefinition.Columns.Where(c => !tableDefinition.ExcludedColumns.Contains(c.Name));
+            foreach (var column in includedColumns)
             {
                 yield return column.Name;
             }
@@ -51,14 +52,14 @@ namespace SnapshotTests.Snapshots
         {
             if (tableDefinition.CompareKeys?.Any() ?? false)
             {
-                foreach (var compareKeyColumnName in tableDefinition.CompareKeys)
+                foreach (var compareKeyColumnName in tableDefinition.CompareKeys.Except(tableDefinition.ExcludedColumns))
                 {
                     yield return compareKeyColumnName;
                 }
             }
             else if (tableDefinition.PrimaryKeys?.Any() ?? false)
             {
-                foreach (var primaryKeyColumnName in tableDefinition.PrimaryKeys)
+                foreach (var primaryKeyColumnName in tableDefinition.PrimaryKeys.Except(tableDefinition.ExcludedColumns))
                 {
                     yield return primaryKeyColumnName;
                 }
@@ -66,7 +67,7 @@ namespace SnapshotTests.Snapshots
 
             if (tableDefinition.RequiredColumns?.Any() ?? false)
             {
-                foreach (var requiredKeyColumnName in tableDefinition.RequiredColumns)
+                foreach (var requiredKeyColumnName in tableDefinition.RequiredColumns.Except(tableDefinition.ExcludedColumns))
                 {
                     yield return requiredKeyColumnName;
                 }

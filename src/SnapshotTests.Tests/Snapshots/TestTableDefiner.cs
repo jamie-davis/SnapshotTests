@@ -226,7 +226,7 @@ namespace SnapshotTests.Tests.Snapshots
             _definer.Sort("Field1");
 
             //Assert
-            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortColumns.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("Field1 Ascending");
         }
 
@@ -238,7 +238,7 @@ namespace SnapshotTests.Tests.Snapshots
             _definer.Sort("Field2");
 
             //Assert
-            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortColumns.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("Field1 Ascending, Field2 Ascending");
         }
 
@@ -249,7 +249,7 @@ namespace SnapshotTests.Tests.Snapshots
             _definer.SortDescending("Field1");
 
             //Assert
-            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortColumns.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("Field1 Descending");
         }
 
@@ -261,7 +261,7 @@ namespace SnapshotTests.Tests.Snapshots
             _definer.SortDescending("Field2");
 
             //Assert
-            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortColumns.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("Field1 Descending, Field2 Descending");
         }
 
@@ -273,7 +273,7 @@ namespace SnapshotTests.Tests.Snapshots
             _definer.SortDescending("Field2");
 
             //Assert
-            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortFields.Select(sf => $"{sf.Field} {sf.SortOrder}"))
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).SortColumns.Select(sf => $"{sf.Field} {sf.SortOrder}"))
                 .Should().Be("Field1 Ascending, Field2 Descending");
         }
 
@@ -308,6 +308,50 @@ namespace SnapshotTests.Tests.Snapshots
             //Assert
             $"UTC: {string.Join(", ", _collection.GetTableDefinition(TestTableName).UtcDates)} Local: {string.Join(", ", _collection.GetTableDefinition(TestTableName).LocalDates)}"
                 .Should().Be("UTC: Field1 Local: Field2");
+        }
+
+        [Test]
+        public void FieldsCanBeExcluded()
+        {
+            //Act
+            _definer.Exclude("BigField").Exclude("Excluded");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).ExcludedColumns)
+                .Should().Be("BigField, Excluded");
+        }
+
+        [Test]
+        public void FieldsCannotBeExcludedTwice()
+        {
+            //Act
+            _definer.Exclude("BigField").Exclude("Excluded").Exclude("BigField").Exclude("Excluded");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).ExcludedColumns)
+                .Should().Be("BigField, Excluded");
+        }
+
+        [Test]
+        public void FieldsCannotBeIncludedTwice()
+        {
+            //Act
+            _definer.Include("BigField").Include("Included").Include("BigField").Include("Included");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).IncludedColumns)
+                .Should().Be("BigField, Included");
+        }
+
+        [Test]
+        public void FieldsCanBeIncluded()
+        {
+            //Act
+            _definer.Include("BigField").Include("Included");
+
+            //Assert
+            string.Join(", ", _collection.GetTableDefinition(TestTableName).IncludedColumns)
+                .Should().Be("BigField, Included");
         }
     }
 }

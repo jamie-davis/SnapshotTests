@@ -6,11 +6,11 @@ Table Name       Comparison Comparison Defined By Types
 ---------------- ---------- ---------- ------------------                                      
 LocalTable       False      False      A_TableDef                                              
                                                                                                
-         Is      Is                                                    Referenced                     
-         Primary Compare Is            Is          Is       Referenced Property   Sort      Sort  Date
-    Name Key     Key     Unpredictable Predictable Required Table Name Name       Direction Index Type
-    ---- ------- ------- ------------- ----------- -------- ---------- ---------- --------- ----- ----
-    Id   False   False   True          False       False                                              
+         Is      Is                                                                      Referenced                     
+         Primary Compare Is            Is          Is       Is       Is       Referenced Property   Sort      Sort  Date
+    Name Key     Key     Unpredictable Predictable Required Included Excluded Table Name Name       Direction Index Type
+    ---- ------- ------- ------------- ----------- -------- -------- -------- ---------- ---------- --------- ----- ----
+    Id   False   False   True          False       False    False    False                                              
                                                                                                
                  Exclude                                                                       
                  From       Include In                                                         
@@ -18,10 +18,10 @@ Table Name       Comparison Comparison Defined By Types
 ---------------- ---------- ---------- ------------------                                      
 PredictableTable False      False      A_PredictableTable                                      
                                                                                                
-         Is      Is                                                    Referenced                     
-         Primary Compare Is            Is          Is       Referenced Property   Sort      Sort  Date
-    Name Key     Key     Unpredictable Predictable Required Table Name Name       Direction Index Type
-    ---- ------- ------- ------------- ----------- -------- ---------- ---------- --------- ----- ----
-    Id   False   False   False         True        False                                              
+         Is      Is                                                                      Referenced                     
+         Primary Compare Is            Is          Is       Is       Is       Referenced Property   Sort      Sort  Date
+    Name Key     Key     Unpredictable Predictable Required Included Excluded Table Name Name       Direction Index Type
+    ---- ------- ------- ------------- ----------- -------- -------- -------- ---------- ---------- --------- ----- ----
+    Id   False   False   False         True        False    False    False                                              
                                                                                                
                                                                                                

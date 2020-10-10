@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using SnapshotTests.Snapshots;
 using TestConsoleLib;
@@ -49,7 +50,7 @@ namespace SnapshotTests.Tests.Snapshots
             var key = new SnapshotRowKey(first.Row, _tableDef);
             
             //Act
-            var result = RowDataComparer.Compare(key, first.Row, second.Row); //note: Keys are different but they are not compared
+            var result = RowDataComparer.Compare(_tableDef, key, first.Row, second.Row); //note: Keys are different but they are not compared
 
             //Assert
             result.Matched.Should().BeTrue();
@@ -68,7 +69,7 @@ namespace SnapshotTests.Tests.Snapshots
             var key = new SnapshotRowKey(first.Row, _tableDef);
             
             //Act
-            var result = RowDataComparer.Compare(key, first.Row, second.Row); //note: Keys are different but they are not compared
+            var result = RowDataComparer.Compare(_tableDef, key, first.Row, second.Row); //note: Keys are different but they are not compared
 
             //Assert
             result.Matched.Should().BeFalse();
@@ -91,7 +92,7 @@ namespace SnapshotTests.Tests.Snapshots
             var key = new SnapshotRowKey(first.Row, _tableDef);
             
             //Act
-            var result = RowDataComparer.Compare(key, first.Row, second.Row); //note: Keys are different but they are not compared
+            var result = RowDataComparer.Compare(_tableDef, key, first.Row, second.Row); //note: Keys are different but they are not compared
 
             //Assert
             var output = new Output();
@@ -99,6 +100,30 @@ namespace SnapshotTests.Tests.Snapshots
             output.WriteLine();
             output.FormatTable(result.Differences);
             output.Report.Verify();
+        }
+
+        [Test]
+        public void ExcludedFieldsAreNotCompared()
+        {
+            //Arrange
+            _tableDef.ExcludeColumnFromComparison("Variable");
+            var first = GetRow(1);
+            var second = GetRow(2);
+
+            first["Variable"] = 1;
+            second["Variable"] = 2;
+            first["Variable2"] = "before";
+            second["Variable2"] = "after";
+            first["Match"] = "same";    //no difference, so not in the output
+            second["Match"] = "same";   //no difference, so not in the output
+
+            var key = new SnapshotRowKey(first.Row, _tableDef);
+            
+            //Act
+            var result = RowDataComparer.Compare(_tableDef, key, first.Row, second.Row); //note: Keys are different but they are not compared
+
+            //Assert
+            result.Differences.Any(d => d.Name == "Variable").Should().BeFalse();
         }
     }
 }

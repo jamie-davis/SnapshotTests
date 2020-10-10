@@ -56,6 +56,7 @@ namespace SnapshotTests
                     SortDesc = p.GetCustomAttribute<DescendingSortFieldAttribute>(),
                     UtcDateTime = p.GetCustomAttribute<UTCAttribute>(),
                     LocalDateTime = p.GetCustomAttribute<LocalAttribute>(),
+                    ExcludeProperty = p.GetCustomAttribute<ExcludeFromComparisonAttribute>(),
                 })
                 .ToList();
 
@@ -77,16 +78,19 @@ namespace SnapshotTests
                     definition.SetPredictable(attributes.Prop.Name);
 
                 if (attributes.SortAsc != null)
-                    definition.SetSortField(attributes.Prop.Name, SortOrder.Ascending, attributes.SortAsc.SortSequencer);
+                    definition.SetSortColumn(attributes.Prop.Name, SortOrder.Ascending, attributes.SortAsc.SortSequencer);
 
                 if (attributes.SortDesc != null)
-                    definition.SetSortField(attributes.Prop.Name, SortOrder.Descending, attributes.SortDesc.SortSequencer);
+                    definition.SetSortColumn(attributes.Prop.Name, SortOrder.Descending, attributes.SortDesc.SortSequencer);
 
                 if (attributes.UtcDateTime != null)
                     definition.SetDateType(attributes.Prop.Name, DateTimeKind.Utc);
 
                 if (attributes.LocalDateTime != null)
                     definition.SetDateType(attributes.Prop.Name, DateTimeKind.Local);
+
+                if (attributes.ExcludeProperty != null)
+                    definition.ExcludeColumnFromComparison(attributes.Prop.Name);
             }
 
             if (type.GetCustomAttribute<ExcludeFromComparisonAttribute>() != null)

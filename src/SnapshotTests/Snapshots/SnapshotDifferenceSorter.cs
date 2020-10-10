@@ -12,7 +12,7 @@ namespace SnapshotTests.Snapshots
     {
         public static List<SnapshotTableDifferences> SortDifferences(SnapshotCollection collection, List<SnapshotTableDifferences> tableDiffs)
         {
-            return tableDiffs.Select(t => t.TableDefinition.SortFields.Any() 
+            return tableDiffs.Select(t => t.TableDefinition.SortColumns.Any() 
                 ? SortTable(t) 
                 : t)
                 .ToList();
@@ -21,7 +21,7 @@ namespace SnapshotTests.Snapshots
         private static SnapshotTableDifferences SortTable(SnapshotTableDifferences tableDifferences)
         {
             Func<IEnumerable<RowDifference>, IEnumerable<RowDifference>> sorter = null;
-            foreach (var fieldSortSpec in SortFieldOrderer.Order(tableDifferences.TableDefinition.SortFields))
+            foreach (var fieldSortSpec in SortFieldOrderer.Order(tableDifferences.TableDefinition.SortColumns))
             {
                 var fieldName = fieldSortSpec.Field;
                 Func<RowDifference, object> fetch = (r) => r.After.GetField(fieldName) ?? r.Before.GetField(fieldName);

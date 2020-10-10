@@ -5,14 +5,15 @@ namespace SnapshotTests.Snapshots
 {
     internal static class RowDataComparer
     {
-        public static RowDataCompareResult Compare(SnapshotRowKey snapshotRowKey, SnapshotRow beforeRow, SnapshotRow afterRow)
+        public static RowDataCompareResult Compare(TableDefinition tableDefinition, SnapshotRowKey snapshotRowKey,
+            SnapshotRow beforeRow, SnapshotRow afterRow)
         {
             var result = true;
 
             var nonKeyFieldNames = beforeRow.GetFieldNames()
                 .Concat(afterRow.GetFieldNames())
                 .Distinct()
-                .Except(snapshotRowKey.GetFieldNames())
+                .Except(snapshotRowKey.GetFieldNames().Concat(tableDefinition.ExcludedColumns))
                 .ToList();
 
             var diffs = new List<FieldDifference>();
