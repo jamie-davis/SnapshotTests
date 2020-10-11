@@ -499,5 +499,83 @@ namespace SnapshotTests.Tests.Snapshots
             //Assert
             string.Join(", ", result.IncludedColumns).Should().Be("");
         }
+
+        [Test]
+        public void LocalIsPreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetDateType("Local", DateTimeKind.Local);
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            var locals = string.Join(", ", result.LocalDates);
+            var utcs = string.Join(", ", result.UtcDates);
+            var dates = $"Local: [{locals}] Utc: [{utcs}]";
+            dates.Should().Be("Local: [Local] Utc: []");
+        }
+
+        [Test]
+        public void UtcIsPreserved()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetDateType("Utc", DateTimeKind.Utc);
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            var locals = string.Join(", ", result.LocalDates);
+            var utcs = string.Join(", ", result.UtcDates);
+            var dates = $"Local: [{locals}] Utc: [{utcs}]";
+            dates.Should().Be("Local: [] Utc: [Utc]");
+        }
+
+        [Test]
+        public void UtcIsOveriddenByLocal()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetDateType("Date", DateTimeKind.Utc);
+            right.SetDateType("Date", DateTimeKind.Local);
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            var locals = string.Join(", ", result.LocalDates);
+            var utcs = string.Join(", ", result.UtcDates);
+            var dates = $"Local: [{locals}] Utc: [{utcs}]";
+            dates.Should().Be("Local: [Date] Utc: []");
+        }
+
+        [Test]
+        public void LocalIsOveriddenByUtc()
+        {
+            //Arrange
+            var left = new TableDefinition(Table);
+            var right = new TableDefinition(Table);
+
+            left.SetDateType("Date", DateTimeKind.Local);
+            right.SetDateType("Date", DateTimeKind.Utc);
+
+            //Act
+            var result = TableDefinitionMerger.Merge(left, right);
+
+            //Assert
+            var locals = string.Join(", ", result.LocalDates);
+            var utcs = string.Join(", ", result.UtcDates);
+            var dates = $"Local: [{locals}] Utc: [{utcs}]";
+            dates.Should().Be("Local: [] Utc: [Date]");
+        }
     }
 }

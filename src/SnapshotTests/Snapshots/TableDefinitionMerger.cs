@@ -34,7 +34,23 @@ namespace SnapshotTests.Snapshots
             GetUnpredictableFields(main, changes, tableDefinition);
             GetSortFields(main, changes, tableDefinition);
             GetExcludedFields(main, changes, tableDefinition);
+            GetDateKinds(main, changes, tableDefinition);
             return tableDefinition;
+        }
+
+        private static void GetDateKinds(TableDefinition main, TableDefinition changes, TableDefinition tableDefinition)
+        {
+            foreach (var dateField in main.LocalDates.Concat(main.UtcDates).Concat(changes.LocalDates).Concat(changes.UtcDates).Distinct())
+            {
+                if (changes.LocalDates.Contains(dateField))
+                    tableDefinition.SetDateType(dateField, DateTimeKind.Local);
+                else if (changes.UtcDates.Contains(dateField))
+                    tableDefinition.SetDateType(dateField, DateTimeKind.Utc);
+                else if (main.LocalDates.Contains(dateField))
+                    tableDefinition.SetDateType(dateField, DateTimeKind.Local);
+                else if (main.UtcDates.Contains(dateField))
+                    tableDefinition.SetDateType(dateField, DateTimeKind.Utc);
+            }
         }
 
         private static void GetExclusion(TableDefinition main, TableDefinition changes, TableDefinition tableDefinition)
