@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SnapshotTests.Snapshots.ValueTrackers;
 using TestConsole.OutputFormatting;
 using TestConsole.OutputFormatting.ReportDefinitions;
 using TestConsoleLib;
@@ -13,7 +14,7 @@ namespace SnapshotTests.Snapshots
     {
         internal static void ReportDifferences(SnapshotCollection collection, Snapshot before, Snapshot after, Output output, ChangeReportOptions changeReportOptions = ChangeReportOptions.Default)
         {
-            var differences = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, (changeReportOptions & ChangeReportOptions.NoSubs) == 0);
+            var differences = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, changeReportOptions);
             var first = true;
             foreach (var tableDifference in differences.TableDifferences)
             {
@@ -23,6 +24,12 @@ namespace SnapshotTests.Snapshots
 
                 output.FormatTable(report);
                 first = false;
+            }
+
+            if ((changeReportOptions & ChangeReportOptions.ReportDateDiagnostics) != 0)
+            {
+                output.WriteLine();
+                DateDiagnosticReporter.Report(output, TimeRangeExtractor.Extract(collection), before, after, differences);
             }
         }
 

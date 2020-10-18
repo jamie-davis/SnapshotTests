@@ -1,0 +1,23 @@
+Table                                                                                          
+-----                                                                                          
+Difference Name   A       B C                                                                  
+---------- ------ ------- - -------                                                            
+Updated    Test 2 5 ==> 8 6 7 ==> 3                                                            
+Deleted    Test 3 3       7 6                                                                  
+Inserted   Test 4 10      7 6                                                                  
+                                                                                               
+====> Date diagnostics begin                                                                   
+Snapshot date ranges                                                                           
+--------------------                                                                           
+Snapshot Start               End                                                               
+-------- ------------------- -------------------                                               
+before   18/10/2020 10:28:00 18/10/2020 10:30:00                                               
+after    18/10/2020 10:30:00 18/10/2020 10:32:00                                               
+                                                                                               
+Dates From Difference Set                                                                      
+-------------------------                                                                      
+Table                                                                                          
+Name                                                                                           
+-----                                                                                          
+====> Date diagnostics end                                                                     
+                                                                                               

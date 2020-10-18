@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using SnapshotTests.Snapshots;
+using SnapshotTests.Tests.TestDoubles;
 using TestConsoleLib;
 using TestConsoleLib.Testing;
 
@@ -209,6 +210,40 @@ namespace SnapshotTests.Tests.Snapshots
 
             //Act
             SnapshotComparer.ReportDifferences(_collection, _collection.GetSnapshot("before"), _collection.GetSnapshot("after"), output, ChangeReportOptions.NoSubs);
+
+            //Assert
+            output.Report.Verify();
+        }
+
+        [Test]
+        public void DateDiagnosticsCanBeAdded()
+        {
+            //Arrange
+            _collection.SetTimeSource(new FakeTimeSource("2020-10-18 10:28","2020-10-18 10:29","2020-10-18 10:30","2020-10-18 10:31","2020-10-18 10:32"));
+
+            var beforeData = new[]
+            {
+                new {Name = "Test 1", A = 5, B = 6, C = 7},
+                new {Name = "Test 2", A = 5, B = 6, C = 7},
+                new {Name = "Test 3", A = 3, B = 7, C = 6},
+            };
+            var afterData = new[]
+            {
+                new {Name = "Test 1", A = 5, B = 6, C = 7},
+                new {Name = "Test 2", A = 8, B = 6, C = 3},
+                new {Name = "Test 4", A = 10, B = 7, C = 6},
+            };
+
+            var beforeBuilder = _collection.NewSnapshot("before");
+            beforeData.ToSnapshotTable(beforeBuilder, "Table", "Name");
+            var afterBuilder = _collection.NewSnapshot("after");
+            afterData.ToSnapshotTable(afterBuilder, "Table");
+            _collection.DefineTable("Table").IsUnpredictable("A").IsUnpredictable("B").IsUnpredictable("C");
+
+            var output = new Output();
+
+            //Act
+            SnapshotComparer.ReportDifferences(_collection, _collection.GetSnapshot("before"), _collection.GetSnapshot("after"), output, ChangeReportOptions.NoSubs | ChangeReportOptions.ReportDateDiagnostics);
 
             //Assert
             output.Report.Verify();

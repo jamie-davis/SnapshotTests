@@ -11,19 +11,17 @@ namespace SnapshotTests.Snapshots
         private Dictionary<string, SnapshotTable> _tables = new Dictionary<string, SnapshotTable>();
 
         internal string Name { get; }
-        public DateTime? DataCapturedTime { get; set; }
+        public DateTime SnapshotTimestamp { get; }
 
         internal Snapshot(string name, ITimeSource timeSource)
         {
             _timeSource = timeSource;
             Name = name;
+            SnapshotTimestamp = GetTickedTime();
         }
 
         internal SnapshotRow AddRow(TableDefinition table)
         {
-            if (DataCapturedTime == null)
-                DataCapturedTime = GetTickedTime();
-
             if (!_tables.TryGetValue(table.TableName, out var snapshotTable))
             {
                 snapshotTable = new SnapshotTable(table);

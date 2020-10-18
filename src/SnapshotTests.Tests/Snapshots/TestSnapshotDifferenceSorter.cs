@@ -37,7 +37,7 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
@@ -75,7 +75,7 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
@@ -134,7 +134,7 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
@@ -178,7 +178,7 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, true);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());
@@ -222,7 +222,7 @@ namespace SnapshotTests.Tests.Snapshots
 
             var before = collection.GetSnapshot("Before");
             var after = collection.GetSnapshot("After");
-            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, false);
+            var diffs = SnapshotDifferenceAnalyser.ExtractDifferences(collection, before, after, ChangeReportOptions.NoSubs);
 
             //Act
             var result = SnapshotDifferenceSorter.SortDifferences(collection, diffs.TableDifferences.ToList());

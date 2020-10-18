@@ -80,7 +80,7 @@ namespace SnapshotTests.Tests.Snapshots
         }
 
         [Test]
-        public void SnapshotHasNoTimestampIfItHasNoData()
+        public void SnapshotHasTimestamp()
         {
             //Arrange
             _collection.NewSnapshot("Test");
@@ -89,21 +89,7 @@ namespace SnapshotTests.Tests.Snapshots
             var snapshot = _collection.GetSnapshot("Test");
 
             //Assert
-            snapshot.DataCapturedTime.Should().BeNull();
-        }
-
-        [Test]
-        public void SnapshotHasTimestampIfRowCreated()
-        {
-            //Arrange
-            var builder = _collection.NewSnapshot("Test");
-
-            //Act
-            var snapshot = _collection.GetSnapshot("Test");
-            builder.AddNewRow("Test");
-
-            //Assert
-            snapshot.DataCapturedTime.Should().NotBeNull();
+            snapshot.SnapshotTimestamp.Should().BeAfter(DateTime.MinValue);
         }
 
         [Test]
@@ -117,10 +103,9 @@ namespace SnapshotTests.Tests.Snapshots
 
             //Act
             var snapshot = _collection.GetSnapshot("Test");
-            builder.AddNewRow("Test");
 
             //Assert
-            snapshot.DataCapturedTime.Should().Be(ticked);
+            snapshot.SnapshotTimestamp.Should().Be(ticked);
         }
     }
 }

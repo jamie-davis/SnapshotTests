@@ -144,7 +144,7 @@ namespace SnapshotTests.Tests.Snapshots
             var after = MakeSnapshot("Test2", 1, 3, MakeValueSet(6), MakeValueSet(6), MakeValueSet(6));
 
             //Act
-            var result = SnapshotDifferenceAnalyser.ExtractDifferences(_collection, before, after, true);
+            var result = SnapshotDifferenceAnalyser.ExtractDifferences(_collection, before, after);
 
             //Assert
             var output = new Output();

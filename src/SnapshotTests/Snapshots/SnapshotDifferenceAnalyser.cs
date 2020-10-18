@@ -8,11 +8,11 @@ namespace SnapshotTests.Snapshots
     /// </summary>
     internal static class SnapshotDifferenceAnalyser
     {
-        internal static SnapshotDifferences ExtractDifferences(SnapshotCollection collection, Snapshot before, Snapshot after, bool performSubstitution)
+        internal static SnapshotDifferences ExtractDifferences(SnapshotCollection collection, Snapshot before, Snapshot after, ChangeReportOptions changeReportOptions = ChangeReportOptions.Default)
         {
             var tableDiffs = SnapshotDifferenceCalculator.GetDifferences(collection, before, after);
             tableDiffs = SnapshotDifferenceSorter.SortDifferences(collection, tableDiffs);
-            tableDiffs = DifferenceRegulator.CleanDifferences(collection, tableDiffs, before, performSubstitution);
+            tableDiffs = DifferenceRegulator.CleanDifferences(collection, tableDiffs, before, (changeReportOptions & ChangeReportOptions.NoSubs) == 0);
             return new SnapshotDifferences(tableDiffs);
         }
 

@@ -10,10 +10,9 @@ namespace SnapshotTests.Snapshots
             var start = collection.InitialisationTime;
             return collection
                 .GetSnapshots()
-                .Where(s => s.DataCapturedTime != null)
                 .Select(s =>
                 {
-                    var snapshotEnd = s.DataCapturedTime.Value;
+                    var snapshotEnd = s.SnapshotTimestamp;
                     var range = new NamedTimeRange(start, snapshotEnd, s.Name);
                     start = snapshotEnd;
                     return range;

@@ -9,6 +9,7 @@ namespace SnapshotTests
     public enum ChangeReportOptions
     {
         Default = 0,
-        NoSubs = 1
+        NoSubs = 1,
+        ReportDateDiagnostics = 2
     }
 }
