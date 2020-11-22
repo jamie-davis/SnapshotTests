@@ -1,0 +1,15 @@
+Table                                                                                          
+-----                                                                                          
+Difference Id                                                                                  
+---------- ------------                                                                        
+Reference  1                                                                                   
+Reference  3                                                                                   
+                                                                                               
+ReferencingTable                                                                               
+----------------                                                                               
+                                                  Variable     ParentId     ParentId           
+Difference Id           Variable before           after        before       after              
+---------- ------------ ------------------------- ------------ ------------ ------------       
+Updated    1            Default variable for Id 1 edited                                       
+Updated    2                                                   1            3                  
+                                                                                               
